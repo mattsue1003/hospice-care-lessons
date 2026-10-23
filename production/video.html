@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>安寧緩和 9:16</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@500;700;900&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#20262c;overflow:hidden}
+#stage{width:1080px;height:1920px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;background:#DCE8F3}
+#sv{position:absolute;inset:0;width:1080px;height:1920px}
+#sub{position:absolute;left:70px;right:70px;top:1545px;height:250px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#sub span{font:900 52px/1.5 "Noto Sans TC","PingFang TC",sans-serif;color:#2E2620;text-align:center;letter-spacing:1px;
+  background:linear-gradient(transparent 58%,#FFE07A 58%,#FFE07A 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 6px}
+text{font-family:"LXGW WenKai TC","Noto Sans TC",sans-serif}
+.ns{font-family:"Noto Sans TC",sans-serif}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="sv" viewBox="0 0 1080 1920">
+    <defs>
+      <filter id="boil" x="-3%" y="-3%" width="106%" height="106%">
+        <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <clipPath id="eggclip"><path d="M0,-180 C52,-180 70,-110 70,-70 C70,-28 40,-8 0,-8 C-40,-8 -70,-28 -70,-70 C-70,-110 -52,-180 0,-180Z"/></clipPath>
+      <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="9" cy="9" r="2.2" fill="#F3DCC4"/></pattern>
+    </defs>
+    <image id="bg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="none"/>
+    <g id="world" filter="url(#boil)"></g>
+  </svg>
+  <div id="sub"><span></span></div>
+</div>
+<script src="timing.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+const CH = CHAPTERS[Q.get('ch') || '1'];
+const LINES = CH.lines, TOTAL = CH.total;
+const INK = '#4A3D33', BROWN = '#B98450', BROWN2 = '#9C6B3F', ORANGE = '#E8552D', TEAL = '#028090';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+const back = x => { x = clamp(x); const c = 1.70158; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const tw = (s, fs) => [...String(s)].reduce((w, c) => w + (/[\x00-\xff]/.test(c) ? .56 : 1) * fs, 0);
+const T = (x, y, s, fs, o = {}) => `<text x="${x}" y="${y}" font-size="${fs}" text-anchor="${o.a || 'middle'}" fill="${o.fill || INK}" font-weight="${o.w || 700}" ${o.cls ? `class="${o.cls}"` : ''} ${o.extra || ''}>${esc(s)}</text>`;
+const fit = (s, fs, maxw) => Math.min(fs, fs * maxw / Math.max(1, tw(s, fs)));
+let CUES = [];
+
+/* ───────── 背景：淡藍紙框＋白頁 ───────── */
+function makePaper() {
+  const c = document.createElement('canvas'); c.width = 1080; c.height = 1920;
+  const g = c.getContext('2d');
+  g.fillStyle = '#D7E5F2'; g.fillRect(0, 0, 1080, 1920);
+  let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 26000; i++) { g.fillStyle = `rgba(${rnd() < .5 ? '255,255,255' : '120,150,190'},${rnd() * .18})`; g.fillRect(rnd() * 1080, rnd() * 1920, 2, 2); }
+  g.fillStyle = '#FFFEFA'; g.beginPath(); g.roundRect(34, 30, 1012, 1860, 30); g.fill();
+  for (let i = 0; i < 9000; i++) { g.fillStyle = `rgba(200,190,170,${rnd() * .07})`; g.fillRect(34 + rnd() * 1012, 30 + rnd() * 1860, 2, 2); }
+  document.getElementById('bg').setAttribute('href', c.toDataURL('image/jpeg', .9));
+}
+function cloud(x, y, s) {
+  return `<g transform="translate(${x},${y}) scale(${s})"><path d="M-120,30 C-150,30 -150,-10 -115,-12 C-112,-50 -60,-60 -40,-30 C-25,-70 40,-70 50,-25 C80,-45 120,-20 105,10 C140,12 140,30 115,30 Z" fill="#fff" stroke="#BFCBD8" stroke-width="4" stroke-linejoin="round"/></g>`;
+}
+
+/* ───────── 小麻雀角色 ───────── */
+const CAST = {
+  grandma: {name: '阿嬤', cap: BROWN, cheek: 1, flower: 1},
+  grandpa: {name: '阿公', cap: BROWN2, brow: 1, glasses: 1},
+  kid: {name: '女兒', cap: '#CFA06C', cheek: 1, s: .84, tuft: 1},
+  nurse: {name: '護理師', cap: '#D9E4EC', body: '#FFFFFF', cheek: 1, hat: 1}
+};
+const WIRE = x => 650 + 46 * (1 - Math.pow((x - 540) / 600, 2));
+function bird(k, x, t, dir, st) {
+  const c = CAST[k], s = c.s || 1, y = WIRE(x);
+  const talk = st.talk, mood = st.mood;
+  const bob = talk ? -Math.abs(Math.sin(t * 9)) * 10 : Math.sin(t * 2.2 + x) * 2.5;
+  const tilt = mood === 'think' ? -8 : mood === 'surprise' ? 4 : talk ? Math.sin(t * 5) * 3 : 0;
+  const blink = ((t + x / 300) % 3.4) < .12 || mood === 'happy';
+  const open = talk && (Math.sin(t * 22) > 0);
+  let g = `<g transform="translate(${x},${y + bob - st.hop}) scale(${dir * s},${s}) rotate(${tilt},0,-90)">`;
+  // 尾巴＋腳
+  g += `<path d="M-52,-40 L-104,-16 L-62,-22 Z" fill="${c.cap}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;
+  g += `<path d="M-14,-12 L-16,8 M-16,8 L-24,10 M-16,8 L-8,11 M14,-12 L12,8 M12,8 L4,10 M12,8 L20,11" stroke="${INK}" stroke-width="4" stroke-linecap="round" fill="none"/>`;
+  // 身體
+  g += `<path d="M0,-180 C52,-180 70,-110 70,-70 C70,-28 40,-8 0,-8 C-40,-8 -70,-28 -70,-70 C-70,-110 -52,-180 0,-180Z" fill="${c.body || '#FFFDF7'}"/>`;
+  g += `<g clip-path="url(#eggclip)"><path d="M-90,-200 L90,-200 L90,-140 C62,-136 34,-124 4,-128 C-26,-131 -44,-100 -52,-44 L-90,-30Z" fill="${c.cap}"/></g>`;
+  g += `<path d="M0,-180 C52,-180 70,-110 70,-70 C70,-28 40,-8 0,-8 C-40,-8 -70,-28 -70,-70 C-70,-110 -52,-180 0,-180Z" fill="none" stroke="${INK}" stroke-width="4.5"/>`;
+  // 翅膀
+  g += `<path d="M-14,-96 C-50,-104 -70,-62 -58,-34 C-40,-28 -18,-52 -14,-96Z" fill="${k === 'nurse' ? '#C9D7E2' : c.cap}" stroke="${INK}" stroke-width="4" stroke-linejoin="round" style="filter:brightness(.88)"/>`;
+  // 臉
+  if (c.cheek) g += `<ellipse cx="36" cy="-80" rx="11" ry="6.5" fill="#F7A6A6" opacity=".7"/>`;
+  if (blink) g += `<path d="M6,-104 q6,5 12,0 M34,-102 q6,5 12,0" stroke="#2b221c" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+  else if (mood === 'surprise') g += `<circle cx="12" cy="-104" r="7.5" fill="#2b221c"/><circle cx="40" cy="-102" r="7.5" fill="#2b221c"/>`;
+  else g += `<ellipse cx="12" cy="-104" rx="5" ry="7" fill="#2b221c"/><ellipse cx="40" cy="-102" rx="5" ry="7" fill="#2b221c"/>`;
+  if (c.glasses) g += `<circle cx="12" cy="-104" r="13" fill="none" stroke="${INK}" stroke-width="3"/><circle cx="41" cy="-102" r="13" fill="none" stroke="${INK}" stroke-width="3"/><path d="M25,-104 L28,-104" stroke="${INK}" stroke-width="3"/>`;
+  if (c.brow) g += `<path d="M0,-124 q10,-6 22,-2 M30,-122 q10,-6 22,0" stroke="#EDEDED" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M0,-124 q10,-6 22,-2 M30,-122 q10,-6 22,0" stroke="${INK}" stroke-width="1.5" fill="none"/>`;
+  if (mood === 'worried' && !c.brow) g += `<path d="M2,-120 l16,6 M50,-118 l-16,6" stroke="#2b221c" stroke-width="3" stroke-linecap="round"/>`;
+  g += open ? `<path d="M48,-98 L68,-96 L50,-90Z M48,-86 L66,-80 L48,-80Z" fill="#EFA640" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>`
+            : `<path d="M47,-96 L68,-89 L47,-83Z" fill="#EFA640" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  if (c.flower) { g += `<g transform="translate(-14,-176)">`; for (let i = 0; i < 5; i++) g += `<ellipse cx="0" cy="-11" rx="8" ry="11" fill="#F59BB7" stroke="${INK}" stroke-width="2.5" transform="rotate(${i * 72})"/>`; g += `<circle r="6" fill="#FFD45E" stroke="${INK}" stroke-width="2.5"/></g>`; }
+  if (c.tuft) g += `<path d="M0,-180 q-6,-22 8,-26 q-12,10 4,18" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+  if (c.hat) g += `<path d="M-30,-168 L-24,-196 L30,-196 L36,-166 Q2,-176 -30,-168Z" fill="#fff" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M3,-191 v18 M-6,-182 h18" stroke="${TEAL}" stroke-width="6" stroke-linecap="round"/>`;
+  g += `</g>`;
+  // 名牌
+  g += T(x, y + 72, c.name, 34, {fill: '#8C7F74', w: 700});
+  // 情緒符號（不鏡像）
+  const hx = x + dir * 70 * s, hy = y - 190 * s + bob;
+  if (mood === 'think') g += T(hx + dir * 10, hy - 6 + Math.sin(t * 4) * 5, '?', 64, {fill: '#7D6BB0'});
+  if (mood === 'surprise') g += T(hx + dir * 10, hy - 8, '!', 70, {fill: ORANGE});
+  if (mood === 'worried') g += `<path d="M${x - dir * 66 * s},${hy + 40} q-10,18 0,24 q10,-6 0,-24Z" fill="#9CCBEF" stroke="${INK}" stroke-width="3"/>`;
+  if (mood === 'happy') for (let i = 0; i < 2; i++) { const p = ((t * .6 + i * .5) % 1); g += heart(hx + dir * (i * 30), hy - p * 60, 14, 1 - p); }
+  return g;
+}
+const heart = (x, y, r, o = 1) => `<path transform="translate(${x},${y}) scale(${r / 10})" d="M0,4 C-12,-6 -6,-14 0,-8 C6,-14 12,-6 0,4Z" fill="#F27A8F" stroke="${INK}" stroke-width="1.6" opacity="${o.toFixed(2)}"/>`;
+
+function bubble(x, by, text, p) {
+  const fs = 46, w = Math.max(200, tw(text, fs) + 70), h = 96;
+  const cx = clamp(x, 70 + w / 2, 1010 - w / 2), sc = back(p);
+  if (sc <= 0) return '';
+  return `<g transform="translate(${cx},${by}) scale(${sc})">
+    <path d="M${-w / 2},${-h} h${w} a24,24 0 0 1 0,0 v0" fill="none"/>
+    <rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" rx="40" fill="#fff" stroke="${INK}" stroke-width="4.5"/>
+    <path d="M${x - cx - 18},-3 L${x - cx},28 L${x - cx + 14},-3" fill="#fff" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M${x - cx - 15},-4 L${x - cx + 11},-4" stroke="#fff" stroke-width="7"/>
+    ${T(0, -h / 2 + 16, text, fs, {fill: '#4A3D33'})}</g>`;
+}
+
+/* ───────── 圖示（約 120×120，原點置中） ───────── */
+const L = `stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"`;
+const IC = {
+  self: () => `<circle r="44" fill="#FFF3E0" ${L}/><path d="M-28,-8 C-20,-36 20,-36 28,-8" fill="${BROWN}" ${L}/><circle cx="-12" cy="2" r="5" fill="${INK}"/><circle cx="12" cy="2" r="5" fill="${INK}"/><path d="M-6,16 L6,16 L0,24Z" fill="#EFA640" ${L}/>`,
+  nurse: () => `<rect x="-40" y="-40" width="80" height="80" rx="18" fill="#E3F4F4" ${L}/><path d="M0,-24 v48 M-24,0 h48" stroke="${TEAL}" stroke-width="14" stroke-linecap="round"/>`,
+  family: () => `<circle cx="-32" cy="10" r="24" fill="#FFE2C4" ${L}/><circle cx="32" cy="10" r="24" fill="#FFE2C4" ${L}/><circle cx="0" cy="-14" r="30" fill="#FFD0A6" ${L}/>` + heart(0, 40, 12),
+  cpr: () => `<path d="M-46,40 C-46,-10 -30,-40 0,-40 C30,-40 46,-10 46,40Z" fill="#FDE3DA" ${L}/><path d="M-22,-6 h44 v20 h-44Z" fill="#fff" ${L}/><path d="M0,-58 v30 M-10,-38 l10,10 l10,-10" fill="none" ${L}/>`,
+  bolt: () => `<path d="M10,-52 L-26,6 L-2,6 L-12,52 L28,-10 L4,-10 Z" fill="#FFD84D" ${L}/>`,
+  tube: () => `<path d="M-30,-40 C20,-40 30,-10 10,10 C-10,30 0,50 30,50" fill="none" stroke="${INK}" stroke-width="16" stroke-linecap="round"/><path d="M-30,-40 C20,-40 30,-10 10,10 C-10,30 0,50 30,50" fill="none" stroke="#CDEBF2" stroke-width="8" stroke-linecap="round"/>`,
+  vent: () => `<rect x="-46" y="-40" width="92" height="70" rx="12" fill="#E6EEF5" ${L}/><path d="M-32,-4 h14 l6,-18 l10,34 l8,-16 h26" fill="none" stroke="${TEAL}" stroke-width="5" stroke-linejoin="round"/><path d="M-26,30 v18 M26,30 v18" ${L}/>`,
+  pill: () => `<g transform="rotate(-35)"><rect x="-44" y="-18" width="88" height="36" rx="18" fill="#fff" ${L}/><path d="M0,-18 v36" ${L}/><path d="M0,-18 h26 a18,18 0 0 1 0,36 h-26Z" fill="#F7A6A6" ${L}/></g>`,
+  wind: () => `<path d="M-46,-18 h52 a14,14 0 1 0 -14,-14 M-46,6 h70 a14,14 0 1 1 -14,14 M-46,30 h36" fill="none" stroke="#5FA8D3" stroke-width="7" stroke-linecap="round"/>`,
+  bed: () => `<path d="M-50,30 V-30 M-50,10 H50 V30 M-50,-6 H50 V10" fill="none" ${L}/><rect x="-44" y="-22" width="30" height="16" rx="8" fill="#fff" ${L}/><path d="M-10,-6 C0,-20 40,-20 46,-6Z" fill="#BFE0F2" ${L}/>`,
+  soap: () => `<circle cx="-14" cy="10" r="26" fill="#DDF1FF" ${L}/><circle cx="22" cy="-16" r="18" fill="#DDF1FF" ${L}/><circle cx="26" cy="26" r="11" fill="#DDF1FF" ${L}/><path d="M-26,0 q6,-8 14,-6" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>`,
+  heart: () => `<path d="M0,40 C-60,0 -40,-50 0,-22 C40,-50 60,0 0,40Z" fill="#F27A8F" ${L}/>`,
+  lung: () => `<path d="M0,-44 V-6 M0,-12 l-14,12 M0,-12 l14,12" fill="none" ${L}/><path d="M-12,-2 C-30,-30 -54,-10 -52,26 C-50,46 -20,44 -12,32Z" fill="#F7B3C2" ${L}/><path d="M12,-2 C30,-30 54,-10 52,26 C50,46 20,44 12,32Z" fill="#F7B3C2" ${L}/>`,
+  liver: () => `<path d="M-50,-14 C-30,-34 30,-34 50,-24 C48,6 20,30 -10,36 C-30,30 -50,10 -50,-14Z" fill="#C97B63" ${L}/>`,
+  kidney: () => `<path d="M10,-40 C-40,-46 -50,20 -10,40 C10,48 26,36 18,20 C10,8 24,-4 30,-16 C34,-30 24,-40 10,-40Z" fill="#D9846F" ${L}/>`,
+  eye: () => `<path d="M-52,0 C-26,-34 26,-34 52,0 C26,34 -26,34 -52,0Z" fill="#fff" ${L}/><circle r="18" fill="#7DB7D8" ${L}/><circle r="7" fill="${INK}"/>`,
+  bone: () => `<g transform="rotate(-30)"><path d="M-30,-8 h60 a12,12 0 1 1 8,14 a12,12 0 1 1 -8,10 h-60 a12,12 0 1 1 -8,-10 a12,12 0 1 1 8,-14Z" fill="#FFF8E7" ${L}/></g>`,
+  bowl: () => `<path d="M-50,-4 H50 C50,30 26,44 0,44 C-26,44 -50,30 -50,-4Z" fill="#FFE7C2" ${L}/><path d="M-30,-20 C-20,-32 -10,-10 0,-22 C10,-34 20,-10 30,-22" fill="none" stroke="#C9B6A6" stroke-width="4" stroke-linecap="round"/><path d="M-56,-56 L56,56" stroke="${ORANGE}" stroke-width="8" stroke-linecap="round" opacity=".85"/>`,
+  cup: () => `<path d="M-30,-40 H30 L22,44 H-22Z" fill="#E4F3FF" ${L}/><path d="M-26,0 H26 L22,44 H-22Z" fill="#9CCBEF" opacity=".8"/><path d="M-30,-40 H30 L22,44 H-22Z" fill="none" ${L}/>`,
+  swab: () => `<g transform="rotate(35)"><path d="M0,-30 V52" stroke="#C99B6A" stroke-width="7" stroke-linecap="round"/><ellipse cx="0" cy="-38" rx="16" ry="22" fill="#fff" ${L}/></g><circle cx="-32" cy="30" r="8" fill="#9CCBEF"/>`,
+  music: () => `<path d="M-20,30 V-40 L36,-50 V20" fill="none" ${L}/><ellipse cx="-30" cy="32" rx="16" ry="12" fill="${INK}"/><ellipse cx="26" cy="22" rx="16" ry="12" fill="${INK}"/>`,
+  hand: () => `<path d="M-30,40 C-40,10 -46,-6 -36,-10 C-28,-12 -24,0 -20,6 L-20,-40 a8,8 0 0 1 16,0 V-6 V-48 a8,8 0 0 1 16,0 V-6 V-42 a8,8 0 0 1 16,0 V0 V-28 a8,8 0 0 1 16,0 V14 C34,34 20,48 -2,48 C-16,48 -26,46 -30,40Z" fill="#FFD9B8" ${L}/>`,
+  photo: () => `<rect x="-48" y="-38" width="96" height="76" rx="6" fill="#fff" ${L}/><path d="M-38,28 L-12,-4 L6,16 L20,2 L38,28Z" fill="#A9D8B8" ${L}/><circle cx="22" cy="-18" r="8" fill="#FFD84D"/>`,
+  urn: () => `<path d="M-22,-44 H22 V-34 C40,-24 44,10 30,34 L24,46 H-24 L-30,34 C-44,10 -40,-24 -22,-34Z" fill="#E8E1D6" ${L}/><path d="M-30,0 H30" ${L}/>`,
+  tree: () => `<path d="M-6,52 V10 H6 V52Z" fill="#B98450" ${L}/><circle cx="0" cy="-14" r="36" fill="#9BD39B" ${L}/><circle cx="-24" cy="4" r="20" fill="#9BD39B" ${L}/><circle cx="24" cy="4" r="20" fill="#9BD39B" ${L}/>`,
+  flower: () => { let s = `<path d="M0,52 V0" stroke="#6DAA6D" stroke-width="6"/><path d="M0,30 q-24,-4 -28,-20 q22,2 28,20Z" fill="#9BD39B" ${L}/>`; for (let i = 0; i < 6; i++) s += `<ellipse cx="0" cy="-30" rx="11" ry="16" fill="#F7A6C4" ${L} transform="rotate(${i * 60},0,-12)"/>`; return s + `<circle cy="-12" r="10" fill="#FFD84D" ${L}/>`; },
+  wave: () => `<path d="M-54,-6 c12,-14 24,-14 36,0 s24,14 36,0 s24,-14 36,0" fill="none" stroke="#5FA8D3" stroke-width="7" stroke-linecap="round"/><path d="M-54,20 c12,-14 24,-14 36,0 s24,14 36,0 s24,-14 36,0" fill="none" stroke="#8CC4E6" stroke-width="7" stroke-linecap="round"/><circle cx="26" cy="-36" r="12" fill="#FFD84D" ${L}/>`,
+  phone: () => `<path d="M-30,-44 C-44,-30 -40,0 -14,26 C12,52 40,52 46,38 L30,20 C24,14 16,16 10,22 C0,18 -16,2 -20,-10 C-14,-16 -12,-24 -18,-30Z" fill="#9BD39B" ${L}/>`,
+  warn: () => `<path d="M0,-50 L52,42 H-52Z" fill="#FFD84D" ${L}/><path d="M0,-16 V12" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><circle cy="28" r="5" fill="${INK}"/>`
+};
+const icon = (n, x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})">${(IC[n] || IC.heart)()}</g>`;
+
+/* ───────── 面板 ───────── */
+const PX = 540, PY = 820, PW = 900;      // 面板區：y 780～1510
+function revealTimes(li, k) {
+  const ln = LINES[li], m = ln.marks, n = m.length, at = ln.panel && ln.panel.at;
+  if (at) return at.map(x => x < 0 ? ln.a + ln.d - .6 : ln.a + m[Math.min(x, n - 1)][0] + .05);
+  if (n >= k && k > 0) return [...Array(k)].map((_, j) => ln.a + m[j][0] + .05);
+  return [...Array(k)].map((_, j) => ln.a + .15 + ln.d * .8 * j / Math.max(1, k));
+}
+function panelState(t) {
+  let li = -1;
+  for (let i = 0; i < LINES.length; i++) if (t >= LINES[i].a - .2) li = i;
+  if (li < 0) return null;
+  let pi = li; while (pi > 0 && !LINES[pi].panel) pi--;
+  const P = {...LINES[pi].panel, li: pi, a: LINES[pi].a - .2};
+  const items = (P.items || []).map(x => x);
+  const times = revealTimes(pi, items.length);
+  for (let j = pi + 1; j <= li; j++) if (LINES[j].more) LINES[j].more.forEach(x => { items.push(x); times.push(LINES[j].a + .1); });
+  P.items = items; P.times = times;
+  return P;
+}
+const pop = (t, at) => back((t - at) / .35);
+function card(x, y, w, h, title, col) {
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="34" fill="#fff" stroke="${INK}" stroke-width="5"/>` +
+    (title ? `<rect x="${x + 40}" y="${y - 38}" width="${tw(title, 50) + 60}" height="74" rx="37" fill="${col || '#FFE07A'}" stroke="${INK}" stroke-width="5"/>` + T(x + 70 + tw(title, 50) / 2, y + 16, title, 50, {}) : '');
+}
+function drawPanel(P, t) {
+  const p = ease((t - P.a) / .4), o = p, sc = .92 + .08 * back((t - P.a) / .45);
+  let s = '';
+  const it = P.items || [];
+  if (P.type === 'big' || P.type === 'warn' || P.type === 'phone') {
+    const hasIc = P.type !== 'big';
+    const fs = fit(P.text, 124, hasIc ? 640 : 860), ty = P.sub ? 1110 : 1150;
+    const tx = hasIc ? 640 : 540;
+    const wipe = ease((t - P.a - .15) / .6), hw = tw(P.text, fs) + 40;
+    s += `<rect x="${tx - hw / 2}" y="${ty - fs * .42}" width="${hw * wipe}" height="${fs * .5}" rx="12" fill="${P.type === 'warn' ? '#FFC9B8' : '#FFE07A'}" opacity=".9"/>`;
+    s += T(tx, ty, P.text, fs, {fill: P.type === 'warn' ? '#B23A1E' : INK});
+    if (P.sub) s += T(540, ty + 120, P.sub, fit(P.sub, 54, 880), {fill: '#7A6C60', w: 400});
+    if (hasIc) s += icon(P.type, 200, ty - 40, 1.6 * back((t - P.a - .1) / .4));
+    if (P.type === 'big') { s += `<path d="M150,1290 q390,40 780,0" fill="none" stroke="#E7D9C8" stroke-width="5" stroke-dasharray="2 16" stroke-linecap="round"/>`; }
+  } else if (P.type === 'card' || P.type === 'list3') {
+    const n = Math.max(it.length, P.type === 'list3' ? 3 : 1), rowH = n >= 5 ? 112 : 132;
+    const h = n * rowH + 90, y0 = 1170 - h / 2 + 20;
+    s += card(90, y0, 900, h, P.title, P.type === 'list3' ? '#CDEBDD' : '#FFE07A');
+    it.forEach((x, j) => {
+      const q = pop(t, P.times[j]); if (q <= 0) return;
+      const yy = y0 + 70 + j * rowH + rowH / 2;
+      const [mk, label] = Array.isArray(x) ? x : ['dot', x];
+      s += `<g transform="translate(160,${yy}) scale(${q})">` +
+        (mk === 'ok' ? `<circle r="30" fill="#7CC69A" ${L}/><path d="M-13,1 l9,10 l17,-20" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`
+         : mk === 'no' ? `<circle r="30" fill="#EF7A63" ${L}/><path d="M-11,-11 l22,22 M11,-11 l-22,22" stroke="#fff" stroke-width="7" stroke-linecap="round"/>`
+         : `<circle r="26" fill="#FFE07A" ${L}/>` + T(0, 12, j + 1, 34, {})) + `</g>`;
+      s += `<g opacity="${clamp(q)}">${T(215, yy + 18, label, fit(label, 54, 740), {a: 'start'})}</g>`;
+    });
+  } else if (P.type === 'steps') {
+    const n = it.length, bh = 104, gap = 40, h = n * bh + (n - 1) * gap, y0 = 1200 - h / 2;
+    s += T(540, y0 - 40, P.title, 56, {fill: '#7A6C60'});
+    it.forEach((x, j) => {
+      const q = pop(t, P.times[j]); if (q <= 0) return;
+      const yy = y0 + j * (bh + gap);
+      s += `<g transform="translate(540,${yy + bh / 2}) scale(${q}) translate(-540,${-(yy + bh / 2)})">`;
+      s += `<rect x="150" y="${yy}" width="780" height="${bh}" rx="56" fill="${['#FFF1C9', '#E2F2EA', '#E3EEF8', '#FBE3EA'][j % 4]}" stroke="${INK}" stroke-width="5"/>`;
+      s += `<circle cx="206" cy="${yy + bh / 2}" r="34" fill="#fff" ${L}/>` + T(206, yy + bh / 2 + 14, j + 1, 40, {});
+      s += T(570, yy + bh / 2 + 18, x, fit(x, 52, 620), {}) + `</g>`;
+      if (j < n - 1 && q > .9) s += `<path d="M540,${yy + bh + 8} v${gap - 18} m-14,-14 l14,14 l14,-14" fill="none" ${L}/>`;
+    });
+  } else if (P.type === 'icons') {
+    const n = it.length, cols = n <= 3 ? n : n === 4 ? 2 : 3, rows = Math.ceil(n / cols);
+    const cw = cols === 2 ? 340 : 290, rh = rows === 1 ? 360 : 280, y0 = 1200 - rows * rh / 2 + 30;
+    s += T(540, y0 - 40, P.title, 56, {fill: '#7A6C60'});
+    it.forEach(([ic, label], j) => {
+      const q = pop(t, P.times[j]); if (q <= 0) return;
+      const r = Math.floor(j / cols), cInRow = Math.min(cols, n - r * cols), c = j % cols;
+      const cx = 540 + (c - (cInRow - 1) / 2) * cw, cy = y0 + r * rh + 110;
+      s += `<g transform="translate(${cx},${cy}) scale(${q})"><circle r="104" fill="${['#FFF1C9', '#E2F2EA', '#E3EEF8', '#FBE3EA', '#F1E6FA', '#FFE6D5'][j % 6]}" stroke="#E8DCCD" stroke-width="4"/>${icon(ic, 0, 0, 1.25)}</g>`;
+      s += `<g opacity="${clamp(q)}">${T(cx, cy + 160, label, fit(label, 46, cw - 20), {})}</g>`;
+    });
+  } else if (P.type === 'vs') {
+    const side = (d, x, col, k0) => {
+      let r = card(x, 900, 420, 470, '', '') + `<rect x="${x}" y="900" width="420" height="110" rx="34" fill="${col}" stroke="${INK}" stroke-width="5"/>` + T(x + 210, 972, d.title, fit(d.title, 50, 380), {});
+      d.items.forEach((y, j) => { const q = pop(t, P.a + .5 + (k0 + j) * .35); if (q > 0) r += `<g opacity="${clamp(q)}">${T(x + 210, 1090 + j * 100, y, fit(y, 46, 380), {w: 700})}</g>`; });
+      return r;
+    };
+    s += side(P.left, 90, '#FFE1D6', 0) + side(P.right, 570, '#D8ECF7', P.left.items.length);
+  } else if (P.type === 'num' || P.type === 'nums') {
+    const arr = P.type === 'num' ? [P] : P.items, n = arr.length;
+    arr.forEach((d, j) => {
+      const y = n === 1 ? 1130 : 990 + j * 290, at = P.a + .2 + j * 1.2;
+      const q = ease((t - at) / 1.1), v = d.value * q;
+      const txt = d.value % 1 ? v.toFixed(1) : Math.round(v).toLocaleString();
+      if (t < at) return;
+      s += `<g opacity="${clamp((t - at) / .3)}">` + `<text x="540" y="${y}" font-size="${n === 1 ? 200 : 150}" text-anchor="middle" fill="${j ? ORANGE : TEAL}" font-weight="700" class="ns">${txt}<tspan font-size="64" fill="${INK}" dx="14">${esc(d.unit)}</tspan></text>`;
+      s += T(540, y + (n === 1 ? 110 : 80), d.label, fit(d.label, 50, 880), {fill: '#6B5E53'}) + `</g>`;
+    });
+  }
+  return `<g opacity="${o.toFixed(3)}" transform="translate(540,1150) scale(${sc}) translate(-540,-1150)">${s}</g>`;
+}
+
+/* ───────── 片頭／片尾 ───────── */
+const NEXT = {1: '放棄急救 DNR', 2: '器官捐贈', 3: '斷食善終', 4: '告別式', 5: null};
+function intro(t) {
+  const p = ease(t / .6), [a, b] = CH.full.split('：');
+  let s = `<g opacity="${clamp((CH.lines[0].a - .1 - t) / .3)}">`;
+  s += `<g transform="translate(540,960) scale(${back(t / .5)})"><rect x="-110" y="-50" width="220" height="92" rx="46" fill="${ORANGE}" stroke="${INK}" stroke-width="5"/>${T(0, 14, `第 ${CH.id} 課`, 50, {fill: '#fff'})}</g>`;
+  s += `<g opacity="${clamp((t - .3) / .4)}">` + T(540, 1150, a, fit(a, 130, 880), {}) + (b ? T(540, 1270, b, fit(b, 68, 880), {fill: '#7A6C60'}) : '') + T(540, 1350, CH.en, 40, {fill: '#9AA7B5', w: 400}) + `</g>`;
+  return s + `</g>`;
+}
+function outro(t) {
+  const a = CH.outro, p = clamp((t - a) / .4);
+  if (p <= 0) return '';
+  let s = `<g opacity="${p}">`;
+  const nx = NEXT[CH.id];
+  s += `<rect x="130" y="930" width="820" height="${nx ? 340 : 300}" rx="40" fill="#FFF6DD" stroke="${INK}" stroke-width="5"/>`;
+  if (nx) s += T(540, 1035, '下一課', 52, {fill: '#7A6C60'}) + T(540, 1180, nx, fit(nx, 110, 760), {});
+  else s += T(540, 1060, '五堂課 看完了！', 80, {}) + T(540, 1170, '回家跟家人聊一聊吧', 56, {fill: '#7A6C60'});
+  return s + `</g>`;
+}
+
+/* ───────── 主繪製 ───────── */
+const world = document.getElementById('world'), turb = document.getElementById('turb'), subEl = document.querySelector('#sub span');
+const POS = {3: [230, 540, 850]};
+let curSub = null;
+function render(t) {
+  turb.setAttribute('seed', 1 + Math.floor(t * 8) % 6);
+  let s = '';
+  s += cloud(150 + Math.sin(t * .3) * 14, 330, .9) + cloud(930 + Math.sin(t * .25 + 1) * 14, 300, 1.05) + cloud(560 + Math.sin(t * .2 + 2) * 10, 1470, .7);
+  // 標題
+  const head = `第${CH.id}課・${CH.title}`;
+  s += `<text x="540" y="170" font-size="74" text-anchor="middle" font-weight="700" fill="#fff" stroke="#A65E9E" stroke-width="14" stroke-linejoin="round" paint-order="stroke">${esc(head)}</text>`;
+  s += T(540, 240, CH.en, 36, {fill: '#9AA7B5', w: 400});
+  // 電線
+  s += `<path d="M30,${WIRE(30)} Q540,${WIRE(540) * 2 - (WIRE(30) + WIRE(1050)) / 2} 1050,${WIRE(1050)}" fill="none" stroke="${INK}" stroke-width="4"/>`;
+  // 目前句子
+  let li = -1; for (let i = 0; i < LINES.length; i++) if (t >= LINES[i].a - .05) li = i;
+  const ln = LINES[li] || null;
+  const speaking = ln && t < ln.a + ln.d + .1;
+  // 角色
+  const pos = POS[3], dirs = [1, -1, -1];
+  CH.cast.forEach((k, i) => {
+    const hop = i === 1 ? 0 : 0, enter = clamp(t / .9);
+    const x = pos[i] + (1 - ease(enter)) * (i === 0 ? -500 : i === 2 ? 500 : 0);
+    let mood = null, talk = false;
+    if (ln && ln.who === k) { mood = t < ln.a + ln.d + .6 ? ln.mood : null; talk = speaking; }
+    const hp = i === 1 && t < 1 ? Math.max(0, Math.sin(t * Math.PI * 2)) * 40 : 0;
+    s += bird(k, x, t, dirs[i], {talk, mood, hop: hp});
+  });
+  // 對話泡泡
+  if (ln && ln.who && ln.bubble) {
+    const i = CH.cast.indexOf(ln.who), end = ln.a + ln.d + .5;
+    const next = LINES[li + 1] ? LINES[li + 1].a - .1 : 1e9;
+    if (t < Math.min(end, next)) s += bubble(pos[i], 430 - (CAST[ln.who].s ? 0 : 0), ln.bubble, (t - ln.a + .1) / .3);
+  }
+  // 面板／片頭／片尾
+  if (t < LINES[0].a) s += intro(t);
+  else if (t < CH.outro) { const P = panelState(t); if (P) s += drawPanel(P, t); }
+  s += outro(t);
+  s += T(540, 1862, '愛迪樂｜鍾孟修 職能治療師', 30, {fill: '#A99C90', w: 400});
+  world.innerHTML = s;
+  // 字幕
+  const sb = ln && t < ln.a + ln.d + .25 ? ln : null;
+  if (sb !== curSub) { curSub = sb; subEl.textContent = sb ? sb.text.replace(/[，。；、：]$/, '') : ''; }
+  subEl.style.opacity = sb ? clamp(Math.min((t - sb.a + .05) / .12, (sb.a + sb.d + .25 - t) / .12)) : 0;
+}
+window.render = render; window.TOTAL = TOTAL;
+window.cues = () => {
+  const c = [{t: .05, type: 'pop'}, {t: .35, type: 'whoosh'}];
+  LINES.forEach((ln, i) => {
+    if (ln.panel) {
+      c.push({t: ln.a - .25, type: 'whoosh'});
+      const k = (ln.panel.items || []).length;
+      if (['card', 'steps', 'icons'].includes(ln.panel.type)) revealTimes(i, k).forEach(x => c.push({t: x, type: 'pop'}));
+      if (ln.panel.type === 'warn') c.push({t: ln.a, type: 'wrong'});
+      if (ln.panel.type === 'num' || ln.panel.type === 'nums') c.push({t: ln.a, type: 'count'});
+      if (ln.panel.type === 'big' || ln.panel.type === 'phone') c.push({t: ln.a + .1, type: 'tick'});
+    }
+    if (ln.more) c.push({t: ln.a + .1, type: ln.more[0][0] === 'no' ? 'wrong' : 'ding'});
+    if (ln.bubble) c.push({t: ln.a - .05, type: 'pop'});
+  });
+  c.push({t: CH.outro, type: 'ding'});
+  return c.sort((a, b) => a.t - b.t);
+};
+makePaper();
+if (/clean/.test(location.search)) document.getElementById('sub').style.display = 'none';
+const stage = document.getElementById('stage');
+function fitStage() { const k = Math.min(innerWidth / 1080, innerHeight / 1920); stage.style.transform = `translate(-50%,-50%) scale(${k})`; }
+addEventListener('resize', fitStage); fitStage();
+if (!/render=1/.test(location.search)) {
+  const audio = new Audio(`build/mix_${CH.id}.m4a`);
+  let t = +(Q.get('t') || 0), last = performance.now(), paused = true;
+  const sync = () => { try { audio.currentTime = t; if (!paused) audio.play().catch(() => {}); else audio.pause(); } catch (e) {} };
+  const loop = now => { if (!paused) t = Math.min(TOTAL, t + (now - last) / 1000); last = now; render(t); requestAnimationFrame(loop); };
+  addEventListener('click', () => { paused = !paused; sync(); });
+  requestAnimationFrame(loop);
+} else render(0);
+</script>
+</body>
+</html>
