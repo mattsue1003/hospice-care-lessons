@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="林口社區大學中高齡安寧緩和講座：五支小麻雀短片，搭配停格提問、問到底常見問題、互動案例、課前課後小測與心願卡。">
+<meta name="description" content="林口社區大學中高齡安寧緩和講座：五堂課，每課六步：想一想、看小麻雀短片、問到底、真實案例、聊一聊、帶回家。">
 <title>好好說再見・安寧緩和五堂課</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -220,6 +220,62 @@ h3.pick{font-size:1.3rem;margin:2rem 0 .8rem}
 .related .kind{margin-right:.4rem}
 .kind{border-radius:999px;padding:.05rem .6rem;font-weight:700;font-size:.8rem}
 
+/* 課次標籤＋步驟 */
+nav.tabs{gap:.5rem;padding-block:.7rem;align-items:stretch}
+nav.tabs .ltab{display:grid;gap:0;text-align:left;padding:.4rem 1rem;border:2px solid var(--line);background:var(--sheet);border-radius:14px;line-height:1.35}
+nav.tabs .ltab span{font-size:.75rem;font-weight:500;color:var(--muted)}
+nav.tabs .ltab strong{font-family:var(--display);font-size:1.15rem;color:var(--ink)}
+nav.tabs .ltab[aria-selected="true"]{border-color:var(--plum);background:var(--plum-soft);box-shadow:none}
+nav.tabs .xtab{font-size:.9rem;align-self:center}
+nav.tabs .xtab:first-of-type{margin-left:auto}
+.lhead{display:grid;gap:.2rem;margin-bottom:1rem}
+.lhead h2{font-size:clamp(1.7rem,4vw,2.4rem)}
+.eyebrow{font-size:.85rem;color:var(--plum);font-weight:700;letter-spacing:.04em}
+.stepper{list-style:none;margin:0 0 1.2rem;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.4rem}
+.stepper button{width:100%;display:flex;align-items:center;gap:.5rem;border:0;background:var(--sheet);border-radius:12px;padding:.5rem .6rem;color:var(--muted);font-weight:700;font-size:.95rem;min-width:0}
+.stepper b{flex:none;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--paper);font-size:.85rem}
+.stepper li.past button{color:var(--ink)}
+.stepper li.past b{background:var(--ok-soft);color:var(--ok)}
+.stepper li.cur button{background:var(--plum);color:var(--sheet)}
+.stepper li.cur b{background:var(--sheet);color:var(--plum)}
+.pane{background:var(--sheet);border:2px solid var(--line);border-radius:var(--r);padding:1.5rem;display:grid;gap:1rem;min-height:22rem;align-content:start}
+.bigq{font-family:var(--display);font-size:1.6rem;line-height:1.5;text-wrap:balance}
+.bigq b{color:var(--plum);margin-right:.5rem;font-family:var(--body);font-size:.8em}
+.warm .poll button{font-size:1.1rem;padding:.6rem 1.3rem}
+.vidpane{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:2rem;align-items:start}
+.vside{display:grid;gap:.9rem}
+.talk{display:grid;gap:1.2rem}
+.cchips{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:.6rem}
+.stage{border:2px solid var(--plum);border-radius:var(--r);padding:1.3rem;display:grid;gap:1rem}
+.stepnav{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.stepnav .btn{font-size:1.05rem;padding:.65rem 1.4rem}
+.keys li{font-size:1.1rem}
+@media (max-width:860px){
+  .vidpane{grid-template-columns:minmax(0,1fr)}
+  .vidpane .vbox{max-width:340px;width:100%;justify-self:center}
+  .stepper{grid-template-columns:repeat(3,minmax(0,1fr))}
+  nav.tabs .xtab:first-of-type{margin-left:0}
+}
+
+/* 版頭縮小，讓課程一進來就看得到 */
+header.top{padding-block:1.2rem .4rem;gap:.6rem 2rem}
+h1{font-size:clamp(1.8rem,4vw,2.5rem)}
+h1 small{display:inline;font-size:.6em;margin-left:.6rem}
+.lead{margin-top:.4rem;font-size:.95rem}
+.tools{margin-top:.6rem}
+.birds{width:200px}
+#lTitle{text-wrap:wrap}
+@media (max-width:860px){
+  .stepper{grid-template-columns:repeat(6,minmax(0,1fr));gap:.25rem}
+  .stepper button{flex-direction:column;gap:.15rem;padding:.4rem .1rem;font-size:.78rem;white-space:nowrap}
+}
+@media (max-width:600px){
+  .birds,.lead{display:none}
+  h1 small{display:block;margin:0}
+}
+
+@media (max-width:480px){.stepper span{font-size:.78rem}.pane{padding:1.1rem}.bigq{font-size:1.35rem}}
+
 @media (max-width:860px){
   .lesson,.wish{grid-template-columns:minmax(0,1fr)}
   .player,.letter{position:static}
@@ -240,10 +296,8 @@ h3.pick{font-size:1.3rem;margin:2rem 0 .8rem}
   <div>
     <p class="kicker">林口社區大學・中高齡生命教育講座</p>
     <h1>好好說再見<small>安寧緩和五堂課</small></h1>
-    <p class="lead">五支一分多鐘的小麻雀短片，一課一個主題。看完影片，再用「問到底」把要不要錢、要多久、獨居怎麼辦這些細節一題一題問清楚；新聞與名人案例則像說故事一樣，邊投票邊猜。</p>
-    <div class="tools">
-      <button class="chip" id="bigBtn" aria-pressed="false">大字模式（投影用）</button>
-    </div>
+    <p class="lead">一課一個主題，每課六步：想一想、看小麻雀短片、問到底、真實案例、聊一聊、帶一件事回家。</p>
+    <div class="tools"><button class="chip" id="bigBtn" aria-pressed="false">大字模式（投影用）</button></div>
   </div>
   <svg class="birds" viewBox="0 0 320 130" role="img" aria-label="三隻小麻雀停在電線上">
     <path d="M0,96 Q160,124 320,96" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
@@ -253,57 +307,17 @@ h3.pick{font-size:1.3rem;margin:2rem 0 .8rem}
   </svg>
 </header>
 
-<nav class="tabs" role="tablist" aria-label="頁面分區">
-  <button role="tab" data-v="learn" aria-selected="true">五堂課</button>
-  <button role="tab" data-v="test" aria-selected="false">課前・課後小測</button>
-  <button role="tab" data-v="cases" aria-selected="false">案例：新聞・國際・藝人</button>
-  <button role="tab" data-v="wish" aria-selected="false">我的心願卡</button>
-  <button role="tab" data-v="res" aria-selected="false">資源與專線</button>
-  <button role="tab" data-v="teach" aria-selected="false">講師使用</button>
-</nav>
+<nav class="tabs" id="tabs" role="tablist" aria-label="課次"></nav>
 
-<section class="view" id="v-learn">
-  <div class="method" aria-label="影片教學法流程">
-    <b>先想想</b><i>→</i><b>看影片・停格提問</b><i>→</i><b>重點整理</b><i>→</i><b>問到底</b><i>→</i><b>一起討論</b><i>→</i><b>帶回家</b>
-  </div>
-  <div class="lessons" role="tablist" aria-label="選擇課次" id="lessonTabs"></div>
-  <div class="lesson">
-    <div class="player">
-      <div class="vbox">
-        <video id="vid" playsinline controls preload="metadata"></video>
-        <div class="stop" id="stop" hidden></div>
-      </div>
-      <div class="pctl">
-        <label><input type="checkbox" id="pauseOn" checked> 影片中途停下來提問</label>
-        <span class="marks" id="marks" aria-label="停格題進度"></span>
-      </div>
-    </div>
-    <div class="steps" id="steps"></div>
-  </div>
-</section>
-
-<section class="view" id="v-test" hidden>
-  <div class="h2row"><h2>課前・課後小測</h2><p>六題是非題。上課前先做一次，五堂課看完再做一次，比比看。</p></div>
-  <div class="tf" id="tf"></div>
-  <div class="tfbar">
-    <button class="btn fill" id="tfCheck">對答案</button>
-    <button class="btn" id="tfSavePre">記為「課前」成績</button>
-    <button class="btn" id="tfSavePost">記為「課後」成績</button>
-    <button class="btn" id="tfReset">清除作答</button>
-  </div>
-  <div class="compare" id="tfCompare" style="margin-top:1rem"></div>
-</section>
-
-<section class="view" id="v-cases" hidden>
-  <div class="h2row"><h2>案例互動</h2><p>每個案例五步走：情境 → 你會怎麼做 → 猜猜看 → 後來呢 → 學到什麼。</p></div>
-  <article class="stage card" id="stage" aria-live="polite"></article>
-  <h3 class="pick">選一個案例</h3>
-  <div class="filters" id="caseFilters"></div>
-  <div class="cases" id="caseList"></div>
+<section class="view" id="v-lesson">
+  <div class="lhead"><p class="eyebrow" id="lEyebrow"></p><h2 id="lTitle"></h2></div>
+  <ol class="stepper" id="stepper" aria-label="本課步驟"></ol>
+  <div id="stepBody"></div>
+  <div class="stepnav" id="stepNav"></div>
 </section>
 
 <section class="view" id="v-wish" hidden>
-  <div class="h2row"><h2>我的心願卡</h2><p>勾一勾、寫一寫，右邊會變成一封給家人的信。資料只存在這台裝置上。</p></div>
+  <div class="h2row"><h2>我的心願卡</h2><p>五堂課上完，勾一勾、寫一寫，右邊會變成一封給家人的信。資料只存在這台裝置上。</p></div>
   <div class="wish">
     <form class="wf" id="wishForm"></form>
     <div class="letter" id="letter" aria-live="polite"></div>
@@ -518,7 +532,7 @@ const L = [
 /* ───────── 案例（互動故事） ───────── */
 const K = {news:'新聞時事', world:'國際案例', star:'藝人・名人'};
 const CASES = [
- {id:'n1', k:'news', when:'2026 年 10 月', ch:[1,2], title:'八成覺得重要，一半沒談過',
+ {id:'n1', k:'news', when:'2026 年 10 月', ch:1, title:'八成覺得重要，一半沒談過',
   scene:['衛福部做了一份全國調查，問大家怎麼看「善終」。','將近八成的人說：提早討論死亡很重要；也有八成說：希望自己決定最後的醫療。'],
   guess:{q:'您猜，真的跟家人談過的人有多少？', o:['大約八成','大約一半','大約一成'], a:1, why:'51.8% 還沒跟家人或重要的人談過未來的醫療，談過的不到一半。'},
   poll:{q:'您自己呢？', o:['談過了','提過，但沒談完','還沒有']},
@@ -526,7 +540,7 @@ const CASES = [
   learn:['「覺得重要」和「真的去做」之間，差一次開口。','最大的誤會是「簽了就是放棄治療」，其實不是。','開口談，比簽名更早、更重要。'],
   todo:'用這句話開場：「我最近上了一堂課，想跟你聊聊我以後的醫療。」',
   src:['聯合報 2026/10/17','https://udn.com/news/story/7266/9820705']},
- {id:'n2', k:'news', when:'2025 年 5 月', ch:[1], title:'諮商費，健保幫你付',
+ {id:'n2', k:'news', when:'2025 年 5 月', ch:1, title:'諮商費，健保幫你付',
   scene:['示範情境：75 歲的王阿姨有糖尿病和高血壓，每個月在診所看家醫科。','她想做預立醫療照護諮商，但聽說要自費三千多元，有點猶豫。'],
   poll:{q:'如果要自費三千元，您願意去做嗎？', o:['願意','太貴了','看情況']},
   guess:{q:'2025 年 5 月起，下面哪一種人做諮商有健保給付？', o:['所有成年人','65 歲以上重大傷病，或參加家醫等計畫的 65 歲以上多重慢性病','只有住院病人'], a:1, why:'健保署 2025 年 5 月 1 日擴大給付，門診也能給付，估計約 180 萬人受惠。'},
@@ -534,7 +548,7 @@ const CASES = [
   learn:['先問自己符不符合給付，費用不一定是阻礙。','給付擴大，代表國家希望更多人提早做。'],
   todo:'下次看診時問醫師：「我符合預立醫療諮商的健保給付嗎？」',
   src:['中央廣播電臺','https://www.rti.org.tw/news/view/id/2247818']},
- {id:'n3', k:'news', when:'2022～2026 年', ch:[4], title:'斷食善終，為什麼吵成這樣？',
+ {id:'n3', k:'news', when:'2022～2026 年', ch:4, title:'斷食善終，為什麼吵成這樣？',
   scene:['2022 年，復健科醫師畢柳鶯出版《斷食善終》。','書裡寫她的母親罹患小腦萎縮症，拒絕插鼻胃管，選擇不再進食的經過。很多照顧者讀了覺得「終於有人說出來」。'],
   poll:{q:'您第一次聽到「斷食善終」，感覺是？', o:['可以理解','有點擔心','不太能接受','說不上來']},
   guess:{q:'2025 年底，她提到協助一個家庭完成斷食，引起很大爭議。您猜當事人是？', o:['意識清楚的末期癌症病人','因腦炎臥床多年、無法表達的 35 歲極重度身障者','一位健康的長輩'], a:1, why:'當事人本人無法表達，由家屬決定，因此引起很大爭議。'},
@@ -543,7 +557,7 @@ const CASES = [
   todo:'照顧壓力大時，撥長照專線 1966，或請醫院安寧團隊協助。',
   care:'討論時請不評價個別家庭的選擇。',
   src:['聯合報 2026/1/31','https://udn.com/news/story/7266/9301155']},
- {id:'n4', k:'news', when:'2026 年 9 月', ch:[3], title:'71.5 萬人想捐，真正捐了幾位？',
+ {id:'n4', k:'news', when:'2026 年 9 月', ch:3, title:'71.5 萬人想捐，真正捐了幾位？',
   scene:['截至 2026 年 9 月，全台已有超過 71.5 萬人次在健保卡上預立器官捐贈意願。'],
   guess:{q:'那 2025 年一整年，真正完成器官捐贈的大約有幾位？', o:['3 萬位','3 千位','318 位'], a:2, why:'2025 年完成捐贈的是 318 位，2026 年到 9 月約 234 位。'},
   poll:{q:'差這麼多，您覺得最可能的原因是？', o:['往生的時機不符合捐贈條件','家人當下不知道本人的心意','醫院沒有詢問']},
@@ -551,7 +565,7 @@ const CASES = [
   learn:['簽了不等於一定捐得成。','家人知道你的心意，才有機會完成。','捐或不捐，都是愛。'],
   todo:'告訴一位家人：「我想捐」、「我不想捐」或「我還在想」。',
   src:['聯合報 2026/10/17','https://udn.com/news/story/7266/9820705']},
- {id:'n5', k:'news', when:'2026 年', ch:[5], title:'新北市的環保葬，要花多少？',
+ {id:'n5', k:'news', when:'2026 年', ch:5, title:'新北市的環保葬，要花多少？',
   scene:['新北市推廣環保自然葬：樹葬、花葬、海葬。骨灰研磨後回歸自然，不立墓碑、不用撿骨。'],
   guess:{q:'在新北市選擇環保葬，使用費要多少？', o:['推廣期間免費','約 5 萬元','約 20 萬元'], a:0, why:'推廣期間免收使用費；選擇新北市環保葬地點的人參加市府聯合奠祭，服務也不收費。'},
   poll:{q:'如果是您，會選環保葬嗎？', o:['會','不會','要看家人','還在想']},
@@ -559,7 +573,7 @@ const CASES = [
   learn:['環保葬省錢，也減輕後代掃墓、撿骨的負擔。','現場沒有墓碑，家人怎麼追思要先談好。'],
   todo:'問家人一句：「如果我想樹葬，你們會不會覺得沒地方看我？」',
   src:['新北市殯葬管理處','https://www.mso.ntpc.gov.tw/']},
- {id:'n6', k:'news', when:'近年', ch:[5], title:'50 歲的他，辦了一場生前告別式',
+ {id:'n6', k:'news', when:'近年', ch:5, title:'50 歲的他，辦了一場生前告別式',
   scene:['一位 50 歲的食品公司主管罹患肺癌。','他想：與其讓大家在我走後追思，不如趁我還在，好好道別。'],
   poll:{q:'如果是您，會想辦生前告別式嗎？', o:['想','不想','有點忌諱','沒想過']},
   guess:{q:'他邀請了 30 位親友，您猜最後來了多少人？', o:['15 人','30 人','120 人'], a:2, why:'來了 120 位，比邀請的多了四倍。'},
@@ -567,7 +581,7 @@ const CASES = [
   learn:['道別可以在生前，不必等到最後。','覺得忌諱，可以換成「感謝會」或生日會的形式。'],
   todo:'這個月，對一個人說「謝謝你」。',
   src:['TVBS 健康2.0','https://health.tvbs.com.tw/life/344673']},
- {id:'w1', k:'world', when:'2023～2024 年', ch:[2], title:'卡特總統的居家安寧',
+ {id:'w1', k:'world', when:'2023～2024 年', ch:2, title:'卡特總統的居家安寧',
   scene:['2023 年 2 月，98 歲的美國前總統卡特在幾次短暫住院後，宣布不再接受更多醫療處置。','他選擇回到家鄉的家，接受安寧照顧。'],
   poll:{q:'聽到「安寧」，您以前以為是？', o:['等死','最後幾天的照顧','讓剩下的日子過得好']},
   guess:{q:'您猜，他在家接受安寧照顧多久？', o:['幾天','幾週','將近兩年'], a:2, why:'他在家度過將近兩年，連 100 歲生日都在家過。'},
@@ -575,7 +589,7 @@ const CASES = [
   learn:['安寧不是放棄，也不是等死。','安寧可以在家裡進行。','不急救、不過度治療，反而可能過得更舒服。'],
   todo:'問附近的醫院：有沒有「居家安寧」服務？',
   src:['WTOC','https://www.wtoc.com/2024/12/29/jimmy-carter-dies-100/']},
- {id:'w2', k:'world', when:'2024 年 2 月', ch:[1,4], title:'荷蘭前總理夫婦，牽手離開',
+ {id:'w2', k:'world', when:'2024 年 2 月', ch:4, title:'荷蘭前總理夫婦，牽手離開',
   scene:['荷蘭前總理范阿格特 2019 年腦出血後，一直沒有完全康復。','他和結婚超過 65 年的太太歐珍妮，兩人都 93 歲，身體都越來越差。'],
   poll:{q:'如果您是他們，會希望和老伴一起決定最後一程嗎？', o:['會','不會','很難說']},
   guess:{q:'2024 年 2 月 5 日，他們做了什麼選擇？', o:['一起住進安寧病房','一起接受安樂死','一起移民'], a:1, why:'兩人一起接受安樂死。荷蘭法律允許「無法忍受、且沒有改善希望的痛苦」者申請。'},
@@ -583,7 +597,7 @@ const CASES = [
   learn:['各國制度不同，台灣能用的是安寧、DNR 和預立醫療決定。','伴侶之間，先知道彼此的想法。'],
   todo:'問老伴：「你希望最後怎麼過？」',
   src:['Semafor','https://www.semafor.com/article/02/13/2024/duo-euthanasia-in-spotlight-after-deaths-of-ex-dutch-prime-minister-and-his-wife']},
- {id:'w3', k:'world', when:'2018～2025 年', ch:[1,2], title:'韓國：300 萬人說「不要延命」',
+ {id:'w3', k:'world', when:'2018～2025 年', ch:1, title:'韓國：300 萬人說「不要延命」',
   scene:['韓國 2018 年 2 月施行《延命醫療決定法》，民眾可以事先登記「不要延命醫療」。','2018 年底，簽署的人約 8.7 萬。'],
   guess:{q:'到 2025 年 8 月，韓國簽署的人有多少？', o:['約 30 萬','約 100 萬','超過 300 萬'], a:2, why:'超過 300 萬人，約占成人的 6.8%。'},
   poll:{q:'您覺得台灣人遲遲沒簽，最大的原因是？', o:['不好意思談','不知道怎麼辦','覺得還早','怕花錢']},
@@ -591,7 +605,7 @@ const CASES = [
   learn:['制度簡單、宣導到位，簽的人就會變多。','台灣有兩條路：免費的 DNR 意願書，和要諮商的預立醫療決定。'],
   todo:'先從免費的 DNR 意願書開始了解。',
   src:['Asia News Network','https://asianews.network/3-million-south-koreans-sign-refusal-of-life-prolonging-treatment/']},
- {id:'w4', k:'world', when:'2025 年 6 月', ch:[4], title:'英國國會：讓末期病人選擇死亡？',
+ {id:'w4', k:'world', when:'2025 年 6 月', ch:4, title:'英國國會：讓末期病人選擇死亡？',
   scene:['2025 年 6 月，英國下議院表決一項法案：讓末期的成年病人，可以申請醫師協助死亡。'],
   guess:{q:'表決結果是？', o:['壓倒性通過','314 比 291，差距很小','被否決'], a:1, why:'以 314 比 291 票通過，送交上議院審議。'},
   poll:{q:'如果台灣也討論這樣的法律，您最在意的是？', o:['病人不要再受苦','弱勢的人被迫選擇','醫師的負擔','家人的感受']},
@@ -599,7 +613,7 @@ const CASES = [
   learn:['這是全世界都在辯論的難題，沒有簡單答案。','不管法律怎麼走，先把台灣現有的權利用好。'],
   todo:'和家人聊聊：您覺得「好走」是什麼樣子？',
   src:['NBC News','https://www.nbcnews.com/news/world/assisted-dying-britain-debate-british-vote-rcna182199']},
- {id:'w5', k:'world', when:'2009 年起', ch:[5], title:'日本人的「終活」',
+ {id:'w5', k:'world', when:'2009 年起', ch:5, title:'日本人的「終活」',
   scene:['2009 年，日本《週刊朝日》連載臨終準備的專題，「終活」這個詞開始流行。'],
   guess:{q:'下面哪一項「不是」常見的終活內容？', o:['寫下醫療意願','整理物品','規劃葬禮','搬去國外住'], a:3, why:'終活包括醫療意願、財產、葬禮方式、整理物品、寫給家人的話。'},
   poll:{q:'您的終活，最想先做哪一項？', o:['醫療意願','整理物品','財產安排','告別式']},
@@ -607,7 +621,7 @@ const CASES = [
   learn:['準備身後事，不是觸霉頭，是替家人省事。','一次做一件，不必一口氣完成。'],
   todo:'挑一個抽屜，這週整理完。',
   src:['天下雜誌','https://www.cw.com.tw/article/5096802']},
- {id:'c1', k:'star', when:'2017～2024 年', ch:[1,4], title:'瓊瑤與平鑫濤：一根鼻胃管',
+ {id:'c1', k:'star', when:'2017～2024 年', ch:1, title:'瓊瑤與平鑫濤：一根鼻胃管',
   scene:['2017 年，作家瓊瑤公開寫給兒子的信，交代自己不要插管、不要鼻胃管。','同一年，她的丈夫平鑫濤中風、失智，吞嚥困難。醫師建議插鼻胃管。'],
   poll:{q:'如果您是瓊瑤，丈夫沒有留下明確的醫療決定，您會？', o:['同意插管','不同意','先跟其他家人商量']},
   guess:{q:'後來發生了什麼事？', o:['全家意見一致','她同意插了鼻胃管，之後和繼子女在網路上公開爭執','送到國外治療'], a:1, why:'插不插鼻胃管，讓瓊瑤和平鑫濤的子女公開吵了起來。'},
@@ -616,7 +630,7 @@ const CASES = [
   todo:'寫下您的醫療委任代理人是誰，並告訴他。',
   care:'涉及輕生，討論時不談方法。心情低落請撥安心專線 1925。',
   src:['香港01','https://www.hk01.com/藝文中國/1081953/瓊瑤86歲自殺身亡-生前曾力挺安樂死-不贊成丈夫插喉掀罵戰']},
- {id:'c2', k:'star', when:'2018 年 6 月', ch:[1,4], title:'傅達仁：遠赴瑞士的最後一程',
+ {id:'c2', k:'star', when:'2018 年 6 月', ch:4, title:'傅達仁：遠赴瑞士的最後一程',
   scene:['資深體育主播傅達仁罹患胰臟癌，晚年飽受病痛。','他多次公開呼籲台灣讓安樂死合法化。'],
   guess:{q:'他最後去了哪裡結束生命？', o:['美國','瑞士','日本'], a:1, why:'2018 年 6 月 7 日，85 歲的他在瑞士接受醫師協助死亡。'},
   poll:{q:'您覺得台灣該不該討論安樂死？', o:['應該','不應該','需要更多討論','不確定']},
@@ -624,7 +638,7 @@ const CASES = [
   learn:['台灣現在能用的：安寧療護、DNR、預立醫療決定。','痛苦需要好的症狀控制，安寧團隊就是做這件事。'],
   todo:'認識您附近醫院的安寧病房或安寧共同照護。',
   src:['公視新聞','https://news.pts.org.tw/article/396308']},
- {id:'s3', k:'star', when:'2025 年', ch:[5], title:'大S：遺願和家人的心',
+ {id:'s3', k:'star', when:'2025 年', ch:5, title:'大S：遺願和家人的心',
   scene:['2025 年 2 月，48 歲的藝人大S（徐熙媛）和家人到日本旅遊，因流感併發肺炎突然過世。'],
   guess:{q:'她生前曾說，如果有一天走了，想要什麼葬法？', o:['海葬','樹葬','土葬'], a:1, why:'她曾說想要環保樹葬，家屬也表示不辦告別式。'},
   poll:{q:'遺願和家人想念的需要不一樣時，您覺得應該？', o:['照遺願','照家人的需要','找兩全的方法']},
@@ -632,7 +646,7 @@ const CASES = [
   learn:['意外可能突然發生，不是老了才需要談。','遺願要說清楚，也要聽聽家人的需要。','告別的方式，也是為了留下來的人。'],
   todo:'跟家人說一次：「如果我突然走了，我希望……」',
   src:['TVBS 健康2.0','https://health.tvbs.com.tw/life/352932']},
- {id:'s4', k:'star', when:'2026 年 6 月', ch:[3], title:'連俞涵的人生待辦清單',
+ {id:'s4', k:'star', when:'2026 年 6 月', ch:3, title:'連俞涵的人生待辦清單',
   scene:['演員連俞涵經歷大學同學、親人突然過世，開始思考死亡。','2026 年 6 月，她在器官捐贈紀念音樂會上分享自己的準備。'],
   guess:{q:'她把什麼列進了人生待辦清單？', o:['環遊世界','器官捐贈','學鋼琴'], a:1, why:'她把器官捐贈列入人生待辦清單，也開始整理物品。'},
   poll:{q:'您的人生待辦清單上，有跟今天的課有關的事嗎？', o:['有','還沒有','我沒有待辦清單']},
@@ -640,7 +654,7 @@ const CASES = [
   learn:['年輕人也在談，談死亡不是長輩的專利。','整理物品，是送給家人的禮物。'],
   todo:'在心願卡上寫下您的器官捐贈意願。',
   src:['聯合報 2026/6/6','https://udn.com/news/story/7266/9550135']},
- {id:'s5', k:'star', when:'2016～2018 年', ch:[2,5], title:'樹木希林：照自己的意思走',
+ {id:'s5', k:'star', when:'2016～2018 年', ch:2, title:'樹木希林：照自己的意思走',
   scene:['日本演員樹木希林罹癌後，開始做「終活」。','她事先選好了自己的墓地。'],
   guess:{q:'關於延命治療，她怎麼跟家人說？', o:['盡量救','不需要，想自然地老去','讓醫師決定'], a:1, why:'她告訴家人不需要延命治療，希望自然地老去。'},
   poll:{q:'您會希望「照自己的意思」安排最後一程嗎？', o:['會','交給家人','還沒想過']},
@@ -650,16 +664,6 @@ const CASES = [
   src:['週刊女性 PRIME','https://www.jprime.jp/articles/-/19034']}
 ];
 
-const TF = [
- ['簽了預立醫療決定書，就等於放棄所有治療。', false, '只在五種臨床條件下才適用，而且可以修改或撤回。'],
- ['做預立醫療照護諮商時，至少要有一位二親等內的家屬參加。', true, '病主法規定本人與至少一位二親等內親屬參與。'],
- ['簽了 DNR，醫療團隊就不再照顧病人。', false, '止痛、止喘、翻身、清潔、陪伴都會繼續。'],
- ['年紀大的人一定不能器官捐贈。', false, '由醫療團隊當下評估，年紀不是絕對門檻。'],
- ['衛福部與安寧緩和醫學學會認為，主動斷食是常規的安寧醫療。', false, '兩者都表示主動斷食不是常規醫療，也不等於安寧善終。'],
- ['獨居、沒有家人能陪的人，就不能做預立醫療照護諮商。', false, '親屬已過世、失蹤或有特殊事由時，可以書面說明後進行。'],
- ['70 歲的人簽預立醫療決定，要子女同意。', false, '成年、具完全行為能力就能簽，沒有年齡上限，也不需子女同意。'],
- ['家人過世後，要在 30 天內辦理死亡登記。', true, '戶籍法規定 30 天內辦理。']
-];
 
 const RES = [
  {t:'安心專線', big:'1925', d:'24 小時免付費。心情低落、照顧壓力大、有輕生念頭時撥打。'},
@@ -672,21 +676,20 @@ const RES = [
 ];
 
 const PLAN = [
- ['0–10 分','開場＋課前小測','先說明「可以只聽不說」；做六題是非。'],
- ['10–25 分','第 1 課 預立醫療','暖身投票→影片（3 次停格）→問到底 9 題（舉手猜）。'],
- ['25–38 分','第 2 課 DNR','影片→問到底→卡特總統案例（互動故事）。'],
- ['38–50 分','第 3 課 器官捐贈','影片→連俞涵案例→「捐或不捐都是愛」。'],
- ['50–55 分','休息','播放輕音樂，講師個別關心情緒較激動的學員。'],
- ['55–70 分','第 4 課 斷食善終','影片→斷食爭議案例→分清楚三件事；提醒 1925。'],
- ['70–82 分','第 5 課 告別式','影片→大S、生前告別式案例→四道人生。'],
- ['82–90 分','心願卡＋課後小測','寫一句想對家人說的話；做課後小測，比較前後成績。']
+ ['0–5 分','開場','說明「今天可以只聽不說」，介紹五堂課都照「想一想→看影片→問到底→真實案例→聊一聊→帶回家」走。'],
+ ['5–22 分','第 1 課 預立醫療','開場投票→影片（3 次停格）→問到底挑 4～5 題（獨居、70 歲、反悔必問）→瓊瑤或健保給付案例。'],
+ ['22–35 分','第 2 課 DNR','影片→問到底（家人能否推翻、要不要叫 119）→卡特總統案例。'],
+ ['35–47 分','第 3 課 器官捐贈','影片→問到底→「71.5 萬想捐，幾位真的捐」案例。'],
+ ['47–52 分','休息','播放輕音樂，個別關心情緒較激動的學員。'],
+ ['52–67 分','第 4 課 斷食善終','影片→問到底→斷食善終爭議或傅達仁案例；提醒 1925。'],
+ ['67–82 分','第 5 課 告別式','影片→問到底（喪葬補助必問）→大S或生前告別式案例→四道人生。'],
+ ['82–90 分','心願卡','每人寫一句想對家人說的話，複製傳給家人。']
 ];
 const NOTES = ['<b>情緒安全：</b>開場先說「今天可以只聽不說」。有學員剛經歷喪親時，避免點名分享。',
  '<b>不評價選擇：</b>急救或不急救、捐或不捐、傳統或環保葬，都是愛的方式。',
- '<b>輕生相關案例：</b>瓊瑤案只談事前溝通的重要，不談方法；結尾都提供安心專線 1925。',
- '<b>操作：</b>影片預設會在重點處停下來提問；想一口氣播完，取消「影片中途停下來提問」即可。問到底與案例都是「先選再揭曉」，可以請學員舉手 A／B／C 後再按。投影時按「大字模式」。',
+ '<b>輕生相關案例：</b>瓊瑤案只談事前溝通的重要，不談方法；第 4 課結尾提供安心專線 1925。',
+ '<b>操作：</b>上方標籤切換課次，每課六個步驟用「下一步」往下走，也可以直接點步驟跳過去。問答都是「先選再揭曉」，請學員舉手 A／B／C 後再按。時間不夠時，問到底挑幾題、案例挑一個就好。投影時按「大字模式」。',
  '<b>數字更新：</b>本頁數字整理至 2026 年 10 月，健保給付對象與新北市環保葬方案可能每年調整，上課前再查一次。'];
-
 
 /* ───────── 工具 ───────── */
 const $ = s => document.querySelector(s);
@@ -710,14 +713,6 @@ $('#b1').innerHTML = birdSVG('#B98450', '<g transform="translate(-14,-176)">' + 
 $('#b2').innerHTML = birdSVG('#CFA06C');
 $('#b3').innerHTML = birdSVG('#9C6B3F', '<circle cx="12" cy="-104" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/><circle cx="41" cy="-102" r="13" fill="none" stroke="var(--ink)" stroke-width="3"/>');
 
-/* ───────── 分頁 ───────── */
-function showView(v) {
-  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.v === v));
-  document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'v-' + v);
-  if (v !== 'learn') vid.pause();
-  store.set('view', v);
-}
-document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => showView(b.dataset.v)));
 const bigBtn = $('#bigBtn');
 function setBig(on) { document.documentElement.classList.toggle('big', on); bigBtn.setAttribute('aria-pressed', on); store.set('big', on); }
 bigBtn.addEventListener('click', () => setBig(!document.documentElement.classList.contains('big')));
@@ -732,22 +727,121 @@ function optionList(o, a, onPick, cls = 'opts') {
   }}}, h('b', {}, ABC[i]), h('span', {}, txt))));
   return box;
 }
-
-/* ───────── 五堂課 ───────── */
-const vid = $('#vid'), stopEl = $('#stop');
-let cur = null, doneStops = new Set();
-const progress = store.get('faqScore', {});
-
-function renderLessonTabs() {
-  const box = $('#lessonTabs'); box.innerHTML = '';
-  L.forEach(l => box.append(h('button', {role: 'tab', 'aria-selected': cur && cur.id === l.id, on: {click: () => openLesson(l.id)}},
-    h('span', {}, `第 ${l.id} 課・${l.len}`), h('strong', {}, l.t),
-    progress[l.id] != null ? h('span', {class: 'done'}, `問到底 答對 ${progress[l.id]}`) : null)));
+function restore(opts, a, picked) {
+  [...opts.children].forEach((b, j) => { b.disabled = true; if (a != null && j === a) b.classList.add('right'); if (j === picked && j !== a) b.classList.add(a == null ? 'pick' : 'wrong'); });
 }
-function renderMarks() {
-  const m = $('#marks'); m.innerHTML = '';
-  cur.stops.forEach((s, i) => m.append(h('span', {class: doneStops.has(i) ? 'on' : '', title: `停格題 ${i + 1}`})));
+
+/* ───────── 分頁：五堂課＋心願卡／資源／講師 ───────── */
+const STEPS = [
+  {k: 'warm', t: '想一想'}, {k: 'video', t: '看影片'}, {k: 'faq', t: '問到底'},
+  {k: 'cases', t: '真實案例'}, {k: 'talk', t: '聊一聊'}, {k: 'home', t: '帶回家'}];
+let view = 'L1', cur = L[0], stepI = 0;
+function renderTabs() {
+  const nav = $('#tabs'); nav.innerHTML = '';
+  L.forEach(l => nav.append(h('button', {role: 'tab', class: 'ltab', 'aria-selected': view === 'L' + l.id, on: {click: () => go('L' + l.id, 0)}},
+    h('span', {}, `第 ${l.id} 課`), h('strong', {}, l.t))));
+  [['wish', '我的心願卡'], ['res', '資源與專線'], ['teach', '講師使用']].forEach(([v, t]) =>
+    nav.append(h('button', {role: 'tab', class: 'xtab', 'aria-selected': view === v, on: {click: () => go(v)}}, t)));
 }
+function go(v, step) {
+  if (vidEl) vidEl.pause();
+  view = v;
+  if (v.startsWith('L')) { cur = L.find(l => 'L' + l.id === v); stepI = step != null ? step : store.get('step' + cur.id, 0); }
+  store.set('view', v);
+  renderTabs();
+  document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== (v.startsWith('L') ? 'v-lesson' : 'v-' + v));
+  if (v.startsWith('L')) renderLesson();
+  $('#tabs').scrollIntoView({block: 'nearest'});
+}
+
+/* ───────── 一堂課：一步一步走 ───────── */
+let vidEl = null;
+function renderLesson() {
+  store.set('step' + cur.id, stepI);
+  $('#lEyebrow').textContent = `第 ${cur.id} 課・影片 ${cur.len}`;
+  $('#lTitle').textContent = cur.full;
+  const sp = $('#stepper'); sp.innerHTML = '';
+  STEPS.forEach((s, i) => sp.append(h('li', {class: i === stepI ? 'cur' : i < stepI ? 'past' : ''},
+    h('button', {type: 'button', 'aria-current': i === stepI ? 'step' : false, on: {click: () => { if (vidEl) vidEl.pause(); stepI = i; renderLesson(); }}}, h('b', {}, i + 1), h('span', {}, s.t)))));
+  const body = $('#stepBody'); body.innerHTML = ''; vidEl = null;
+  body.append(BUILD[STEPS[stepI].k]());
+  const nav = $('#stepNav'); nav.innerHTML = '';
+  nav.append(h('button', {type: 'button', class: 'btn', disabled: stepI === 0, on: {click: () => { if (vidEl) vidEl.pause(); stepI--; renderLesson(); }}}, '← 上一步'));
+  if (stepI < STEPS.length - 1) nav.append(h('button', {type: 'button', class: 'btn fill', on: {click: () => { if (vidEl) vidEl.pause(); stepI++; renderLesson(); window.scrollTo({top: $('#v-lesson').offsetTop - 70, behavior: 'smooth'}); }}}, `下一步：${STEPS[stepI + 1].t} →`));
+  else if (cur.id < L.length) nav.append(h('button', {type: 'button', class: 'btn fill', on: {click: () => go('L' + (cur.id + 1), 0)}}, `下一課：${L[cur.id].t} →`));
+  else nav.append(h('button', {type: 'button', class: 'btn fill', on: {click: () => go('wish')}}, '寫我的心願卡 →'));
+}
+
+const BUILD = {
+  warm() {
+    const votes = store.get('warm' + cur.id, null);
+    const poll = h('div', {class: 'poll'});
+    cur.warm.o.forEach((o, i) => poll.append(h('button', {type: 'button', 'aria-pressed': votes === i, on: {click: () => { store.set('warm' + cur.id, i); poll.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', i === j)); }}}, o)));
+    return h('div', {class: 'pane warm'}, h('p', {class: 'eyebrow'}, '開場投票・沒有對錯'), h('p', {class: 'bigq'}, cur.warm.q), poll,
+      h('p', {class: 'sub'}, '請大家舉手選一個。這堂課最後，再回頭想想答案有沒有改變。'));
+  },
+  video() {
+    const v = h('video', {playsinline: '', controls: '', preload: 'metadata', src: `video/ch${cur.id}.mp4`, poster: `img/ch${cur.id}.jpg`});
+    const stop = h('div', {class: 'stop', hidden: ''});
+    const marks = h('span', {class: 'marks', 'aria-label': '停格題進度'});
+    const pauseOn = h('input', {type: 'checkbox', id: 'pauseOn'}); pauseOn.checked = store.get('pauseOn', true);
+    pauseOn.addEventListener('change', () => store.set('pauseOn', pauseOn.checked));
+    const done = new Set();
+    const drawMarks = () => { marks.innerHTML = ''; cur.stops.forEach((s, i) => marks.append(h('span', {class: done.has(i) ? 'on' : ''}))); };
+    const show = i => {
+      const s = cur.stops[i]; v.pause(); done.add(i); drawMarks();
+      stop.innerHTML = ''; stop.hidden = false;
+      const why = h('p', {class: 'why'}, s.why); why.hidden = true;
+      const goOn = h('button', {class: 'go', type: 'button', on: {click: () => { stop.hidden = true; v.play(); }}}, '繼續看影片 ▶'); goOn.hidden = true;
+      stop.append(h('p', {class: 'tag'}, `停格提問 ${i + 1} / ${cur.stops.length}`), h('h3', {}, s.q),
+        optionList(s.o, s.a, () => { why.hidden = false; goOn.hidden = false; goOn.focus(); }), why, goOn);
+    };
+    v.addEventListener('timeupdate', () => { if (!pauseOn.checked || !stop.hidden) return; cur.stops.forEach((s, i) => { if (!done.has(i) && v.currentTime >= s.at && v.currentTime < s.at + 1.2) show(i); }); });
+    v.addEventListener('seeked', () => { cur.stops.forEach((s, i) => { if (v.currentTime < s.at - .3) done.delete(i); }); drawMarks(); });
+    v.addEventListener('play', () => { stop.hidden = true; });
+    vidEl = v; drawMarks();
+    return h('div', {class: 'pane vidpane'},
+      h('div', {class: 'vbox'}, v, stop),
+      h('div', {class: 'vside'},
+        h('p', {class: 'eyebrow'}, `小麻雀短片・${cur.len}`),
+        h('p', {class: 'bigq'}, '按播放，影片會在 3 個地方停下來問大家一題。'),
+        h('p', {class: 'sub'}, '先請大家舉手選 A、B、C，再按答案揭曉，最後按「繼續看影片」。'),
+        h('div', {class: 'pctl'}, h('label', {for: 'pauseOn'}, pauseOn, ' 影片中途停下來提問'), marks),
+        h('p', {class: 'sub'}, '看完影片，按下一步「問到底」，把細節一題一題問清楚。')));
+  },
+  faq() {
+    return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, `${cur.faq.length} 個大家最常問的問題・先猜再揭曉`), faqPlayer(cur));
+  },
+  cases() {
+    const list = CASES.filter(c => c.ch === cur.id);
+    let pickId = store.get('case' + cur.id, list[0].id);
+    if (!list.find(c => c.id === pickId)) pickId = list[0].id;
+    const stage = h('article', {class: 'stage', 'aria-live': 'polite'});
+    const chips = h('div', {class: 'cchips'});
+    const draw = () => {
+      chips.innerHTML = '';
+      list.forEach((c, i) => chips.append(h('button', {type: 'button', class: 'ccard' + (c.id === pickId ? ' on' : ''), on: {click: () => { pickId = c.id; store.set('case' + cur.id, pickId); caseStep = 0; draw(); }}},
+        h('span', {class: 'kind ' + c.k}, `案例 ${i + 1}・${K[c.k]}`), h('strong', {}, c.title))));
+      renderStage(stage, list.find(c => c.id === pickId), list, id => { pickId = id; store.set('case' + cur.id, id); caseStep = 0; draw(); });
+    };
+    caseStep = 0; draw();
+    return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, `這一課有 ${list.length} 個真實案例，選一個開始`), chips, stage);
+  },
+  talk() {
+    return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, '小組或兩兩討論・3～5 分鐘'),
+      h('div', {class: 'talk'}, cur.disc.map((d, i) => h('p', {class: 'bigq'}, h('b', {}, `Q${i + 1}`), d))),
+      h('details', {}, h('summary', {}, '講師提示'), h('div', {}, cur.tip)));
+  },
+  home() {
+    const back = cur.warm.o[store.get('warm' + cur.id, -1)];
+    return h('div', {class: 'pane'},
+      h('p', {class: 'eyebrow'}, '本課重點'),
+      h('ul', {class: 'keys'}, cur.keys.map(k => h('li', {}, h('span', {}, k)))),
+      back ? h('p', {class: 'sub'}, `開場時您選了「${back}」。上完這堂課，答案有沒有不一樣？`) : null,
+      h('p', {class: 'take'}, h('small', {}, '帶回家做一件事'), cur.take),
+      cur.id === L.length ? h('p', {class: 'sub'}, '五堂課上完了！最後一步，把您的想法寫成一封給家人的心願信。') : null);
+  }
+};
 
 /* 問到底：一題一題來，先猜再揭曉 */
 function faqPlayer(lesson) {
@@ -756,34 +850,19 @@ function faqPlayer(lesson) {
   const wrap = h('div', {class: 'faq'});
   const draw = () => {
     wrap.innerHTML = '';
-    const head = h('div', {class: 'faqhead'});
-    const dots = h('div', {class: 'dots', role: 'tablist', 'aria-label': '題目'});
+    const dots = h('div', {class: 'dots'});
     F.forEach((f, i) => dots.append(h('button', {type: 'button', class: (i === idx && !all ? 'cur ' : '') + (picked[i] == null ? '' : picked[i].ok === false ? 'no' : 'ok'), 'aria-label': `第 ${i + 1} 題：${f.q}`, on: {click: () => { idx = i; all = false; draw(); }}}, i + 1)));
-    head.append(dots, h('button', {type: 'button', class: 'chip', 'aria-pressed': all, on: {click: () => { all = !all; draw(); }}}, all ? '回到一題一題' : '講義模式：全部展開'));
-    wrap.append(head);
-    if (all) {
-      F.forEach((f, i) => wrap.append(h('div', {class: 'faqcard flat'}, h('p', {class: 'qn'}, `Q${i + 1}`), h('h4', {}, f.q), answerBox(f))));
-      return;
-    }
-    const f = F[idx], card = h('div', {class: 'faqcard'});
+    wrap.append(h('div', {class: 'faqhead'}, dots, h('button', {type: 'button', class: 'chip', 'aria-pressed': all, on: {click: () => { all = !all; draw(); }}}, all ? '回到一題一題' : '講義模式：全部展開')));
+    if (all) { F.forEach((f, i) => wrap.append(h('div', {class: 'faqcard flat'}, h('p', {class: 'qn'}, `Q${i + 1}`), h('h4', {}, f.q), answerBox(f)))); return; }
+    const f = F[idx], card = h('div', {class: 'faqcard'}), slot = h('div');
     card.append(h('p', {class: 'qn'}, `第 ${idx + 1} / ${F.length} 題・${f.a == null ? '沒有標準答案，選您的想法' : '先猜猜看'}`), h('h4', {}, f.q));
-    const ansSlot = h('div');
-    const opts = optionList(f.o, f.a, (ok, i) => {
-      picked[idx] = {ok, i}; ansSlot.append(answerBox(f));
-      const right = Object.values(picked).filter(p => p.ok).length;
-      if (Object.keys(picked).length === F.length) { progress[lesson.id] = `${right}/${F.filter(x => x.a != null).length}`; store.set('faqScore', progress); renderLessonTabs(); }
-      dots.children[idx].className = 'cur ' + (ok === false ? 'no' : 'ok');
-    }, 'opts big');
-    if (picked[idx]) {   // 已作答：還原畫面
-      [...opts.children].forEach((b, j) => { b.disabled = true; if (f.a != null && j === f.a) b.classList.add('right'); if (j === picked[idx].i && j !== f.a) b.classList.add(f.a == null ? 'pick' : 'wrong'); });
-      ansSlot.append(answerBox(f));
-    }
-    card.append(opts, ansSlot);
-    const nav = h('div', {class: 'faqnav'},
+    const opts = optionList(f.o, f.a, (ok, i) => { picked[idx] = {ok, i}; slot.append(answerBox(f)); dots.children[idx].className = 'cur ' + (ok === false ? 'no' : 'ok'); }, 'opts big');
+    if (picked[idx]) { restore(opts, f.a, picked[idx].i); slot.append(answerBox(f)); }
+    card.append(opts, slot);
+    wrap.append(card, h('div', {class: 'faqnav'},
       h('button', {type: 'button', class: 'btn', disabled: idx === 0, on: {click: () => { idx--; draw(); }}}, '← 上一題'),
-      idx < F.length - 1 ? h('button', {type: 'button', class: 'btn fill', on: {click: () => { idx++; draw(); }}}, '下一題 →')
-        : h('p', {class: 'score'}, `${Object.values(picked).filter(p => p.ok).length} 題猜對！`));
-    wrap.append(card, nav);
+      idx < F.length - 1 ? h('button', {type: 'button', class: 'btn', on: {click: () => { idx++; draw(); }}}, '下一題 →')
+        : h('p', {class: 'score'}, `猜對 ${Object.values(picked).filter(p => p.ok).length} 題`)));
   };
   draw();
   return wrap;
@@ -792,121 +871,41 @@ function answerBox(f) {
   return h('div', {class: 'ans'}, h('p', {class: 'ansmain'}, f.a == null ? '' : '答案：', f.ans), f.more.length ? h('ul', {}, f.more.map(m => h('li', {}, m))) : null);
 }
 
-function openLesson(id) {
-  cur = L.find(l => l.id === id); doneStops = new Set(); stopEl.hidden = true;
-  vid.src = `video/ch${id}.mp4`; vid.poster = `img/ch${id}.jpg`;
-  store.set('lesson', id);
-  renderLessonTabs(); renderMarks();
-  const S = $('#steps'); S.innerHTML = '';
-  const step = (n, title, ...body) => h('div', {class: 'step'}, h('div', {class: 'n'}, n), h('h3', {}, title), h('div', {class: 'body'}, ...body));
-  const votes = store.get('warm' + id, null);
-  const poll = h('div', {class: 'poll'});
-  cur.warm.o.forEach((o, i) => poll.append(h('button', {type: 'button', 'aria-pressed': votes === i, on: {click: () => { store.set('warm' + id, i); poll.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', i === j)); }}}, o)));
-  S.append(step(1, '先想想', h('p', {class: 'card warmq'}, cur.warm.q), poll));
-  S.append(step(2, '看影片', h('p', {}, `按左邊的影片播放，片長 ${cur.len}。影片會在 3 個地方停下來問您一題，答完再繼續。`)));
-  S.append(step(3, '重點整理', h('ul', {class: 'keys card'}, cur.keys.map(k => h('li', {}, h('span', {}, k))))));
-  S.append(step(4, `問到底：${cur.faq.length} 個大家最常問的`, h('p', {class: 'sub'}, '每題先猜，再揭曉答案和細節。'), faqPlayer(cur)));
-  S.append(step(5, '一起討論', h('div', {class: 'disc card'}, cur.disc.map(d => h('p', {}, d)), h('details', {}, h('summary', {}, '講師提示'), h('div', {}, cur.tip)))));
-  S.append(step(6, '帶回家做一件事', h('p', {class: 'take'}, cur.take),
-    h('p', {class: 'src'}, '接著玩相關案例：'), h('div', {class: 'related'}, cur.cases.map(cid => { const c = CASES.find(x => x.id === cid); return h('button', {type: 'button', on: {click: () => jumpCase(cid)}}, h('span', {class: 'kind ' + c.k}, K[c.k]), c.title); }))));
-}
-
-function showStop(i) {
-  const s = cur.stops[i];
-  vid.pause(); doneStops.add(i); renderMarks();
-  stopEl.innerHTML = ''; stopEl.hidden = false;
-  const why = h('p', {class: 'why'}, s.why); why.hidden = true;
-  const go = h('button', {class: 'go', type: 'button', on: {click: () => { stopEl.hidden = true; vid.play(); }}}, '繼續看影片 ▶'); go.hidden = true;
-  stopEl.append(h('p', {class: 'tag'}, `停格提問 ${i + 1} / ${cur.stops.length}`), h('h3', {}, s.q),
-    optionList(s.o, s.a, () => { why.hidden = false; go.hidden = false; go.focus(); }), why, go);
-}
-vid.addEventListener('timeupdate', () => {
-  if (!cur || !$('#pauseOn').checked || !stopEl.hidden) return;
-  const t = vid.currentTime;
-  cur.stops.forEach((s, i) => { if (!doneStops.has(i) && t >= s.at && t < s.at + 1.2) showStop(i); });
-});
-vid.addEventListener('seeked', () => { cur.stops.forEach((s, i) => { if (vid.currentTime < s.at - .3) doneStops.delete(i); }); renderMarks(); });
-vid.addEventListener('play', () => { if (!stopEl.hidden) stopEl.hidden = true; });
-
-/* ───────── 案例：互動故事 ───────── */
+/* 案例：互動故事 */
 const STEPNAME = {scene: '情境', poll: '你會怎麼做？', guess: '猜猜看', then: '後來呢？', learn: '學到什麼'};
-let caseFilter = 'all', caseCur = CASES[0], caseStep = 0;
-function caseSteps(c) { return Object.keys(c).filter(k => STEPNAME[k]).concat(Object.keys(c).includes('learn') ? [] : []); }
+let caseStep = 0;
 const caseAns = {};
-function renderStage() {
-  const c = caseCur, steps = caseSteps(c), k = steps[caseStep], st = $('#stage');
+function renderStage(st, c, list, open) {
+  const steps = Object.keys(c).filter(k => STEPNAME[k]), k = steps[caseStep];
+  const redraw = () => renderStage(st, c, list, open);
   st.innerHTML = '';
-  st.append(h('div', {class: 'meta'}, h('span', {class: 'kind ' + c.k}, K[c.k]), h('span', {}, c.when), h('span', {}, '對應：' + c.ch.map(n => `第${n}課`).join('、'))),
-    h('h3', {class: 'stitle'}, c.title));
+  st.append(h('div', {class: 'meta'}, h('span', {class: 'kind ' + c.k}, K[c.k]), h('span', {}, c.when)), h('h3', {class: 'stitle'}, c.title));
   const bar = h('ol', {class: 'sbar'});
-  steps.forEach((s, i) => bar.append(h('li', {class: i === caseStep ? 'cur' : i < caseStep ? 'past' : ''}, h('button', {type: 'button', on: {click: () => { caseStep = i; renderStage(); }}}, STEPNAME[s]))));
+  steps.forEach((s, i) => bar.append(h('li', {class: i === caseStep ? 'cur' : i < caseStep ? 'past' : ''}, h('button', {type: 'button', on: {click: () => { caseStep = i; redraw(); }}}, STEPNAME[s]))));
   st.append(bar);
-  const body = h('div', {class: 'sbody'});
-  const key = c.id + k, prev = caseAns[key];
+  const body = h('div', {class: 'sbody'}), key = c.id + k;
   if (k === 'scene') c.scene.forEach(p => body.append(h('p', {class: 'story'}, p)));
   if (k === 'poll' || k === 'guess') {
-    const q = c[k], isGuess = k === 'guess';
-    body.append(h('p', {class: 'sq'}, q.q));
-    const note = h('div');
-    const opts = optionList(q.o, isGuess ? q.a : null, (ok, i) => { caseAns[key] = i; note.append(fb()); }, 'opts big');
-    const fb = () => isGuess ? h('p', {class: 'why'}, (caseAns[key] === q.a ? '猜對了！' : `答案是 ${ABC[q.a]}。`) + q.why)
-      : h('p', {class: 'why'}, '沒有標準答案。請舉手看看大家怎麼選，再聽聽旁邊的人為什麼這樣選。');
-    if (prev != null) { [...opts.children].forEach((b, j) => { b.disabled = true; if (isGuess && j === q.a) b.classList.add('right'); if (j === prev && (!isGuess || j !== q.a)) b.classList.add(isGuess ? 'wrong' : 'pick'); }); note.append(fb()); }
-    body.append(opts, note);
+    const q = c[k], isG = k === 'guess', note = h('div');
+    const fb = () => h('p', {class: 'why'}, isG ? (caseAns[key] === q.a ? '猜對了！' : `答案是 ${ABC[q.a]}。`) + q.why : '沒有標準答案。請舉手看看大家怎麼選，再聽聽旁邊的人為什麼這樣選。');
+    const opts = optionList(q.o, isG ? q.a : null, (ok, i) => { caseAns[key] = i; note.append(fb()); }, 'opts big');
+    if (caseAns[key] != null) { restore(opts, isG ? q.a : null, caseAns[key]); note.append(fb()); }
+    body.append(h('p', {class: 'sq'}, q.q), opts, note);
   }
   if (k === 'then') body.append(h('ul', {class: 'thens'}, c.then.map(p => h('li', {}, p))));
   if (k === 'learn') {
-    body.append(h('ul', {class: 'learn'}, c.learn.map(p => h('li', {}, p))),
-      h('p', {class: 'take'}, h('small', {}, '今天就能做'), c.todo));
+    body.append(h('ul', {class: 'learn'}, c.learn.map(p => h('li', {}, p))), h('p', {class: 'take'}, h('small', {}, '今天就能做'), c.todo));
     if (c.care) body.append(h('p', {class: 'care'}, c.care));
     body.append(h('p', {class: 'src'}, '來源：', h('a', {href: c.src[1], target: '_blank', rel: 'noopener'}, c.src[0])));
   }
   st.append(body);
-  const i = CASES.indexOf(caseCur);
+  const i = list.indexOf(c);
   st.append(h('div', {class: 'faqnav'},
-    h('button', {type: 'button', class: 'btn', disabled: caseStep === 0, on: {click: () => { caseStep--; renderStage(); }}}, '← 上一步'),
-    caseStep < steps.length - 1 ? h('button', {type: 'button', class: 'btn fill', on: {click: () => { caseStep++; renderStage(); }}}, `下一步：${STEPNAME[steps[caseStep + 1]]} →`)
-      : h('button', {type: 'button', class: 'btn fill', on: {click: () => openCase(CASES[(i + 1) % CASES.length].id)}}, '下一個案例 →')));
+    h('button', {type: 'button', class: 'btn', disabled: caseStep === 0, on: {click: () => { caseStep--; redraw(); }}}, '← 上一步'),
+    caseStep < steps.length - 1 ? h('button', {type: 'button', class: 'btn', on: {click: () => { caseStep++; redraw(); }}}, `${STEPNAME[steps[caseStep + 1]]} →`)
+      : i < list.length - 1 ? h('button', {type: 'button', class: 'btn', on: {click: () => open(list[i + 1].id)}}, '下一個案例 →')
+      : h('p', {class: 'sub'}, '這一課的案例都看完了，按下方「下一步」繼續。')));
 }
-function openCase(id, scroll = true) {
-  caseCur = CASES.find(c => c.id === id); caseStep = 0; renderStage(); renderCaseGrid();
-  if (scroll) $('#stage').scrollIntoView({behavior: 'smooth', block: 'start'});
-}
-function renderCaseGrid() {
-  const f = $('#caseFilters'); f.innerHTML = '';
-  [['all', '全部'], ...Object.entries(K), ...L.map(l => ['ch' + l.id, `第${l.id}課`])].forEach(([k, lab]) =>
-    f.append(h('button', {class: 'chip', type: 'button', 'aria-pressed': caseFilter === k, on: {click: () => { caseFilter = k; renderCaseGrid(); }}}, lab)));
-  const box = $('#caseList'); box.innerHTML = '';
-  CASES.filter(c => caseFilter === 'all' || c.k === caseFilter || (caseFilter.startsWith('ch') && c.ch.includes(+caseFilter.slice(2)))).forEach(c =>
-    box.append(h('button', {type: 'button', class: 'ccard' + (c === caseCur ? ' on' : ''), on: {click: () => openCase(c.id)}},
-      h('span', {class: 'kind ' + c.k}, K[c.k]), h('strong', {}, c.title), h('span', {class: 'cm'}, `${c.when}・第${c.ch.join('、')}課`))));
-}
-function jumpCase(id) { showView('cases'); openCase(id); }
-
-/* ───────── 前後測 ───────── */
-let tfAns = store.get('tfAns', {});
-function renderTF(check = false) {
-  const box = $('#tf'); box.innerHTML = '';
-  TF.forEach(([q, a, why], i) => {
-    const row = h('div', {class: 'row'}, h('p', {}, `${i + 1}. ${q}`));
-    const yn = h('div', {class: 'yn'});
-    [['○', true], ['✕', false]].forEach(([lab, v]) => yn.append(h('button', {type: 'button', 'aria-label': v ? '對' : '錯', 'aria-pressed': tfAns[i] === v, on: {click: () => { tfAns[i] = v; store.set('tfAns', tfAns); renderTF(); }}}, lab)));
-    row.append(yn);
-    if (check && tfAns[i] !== undefined) row.append(h('p', {class: 'fb ' + (tfAns[i] === a ? 'ok' : 'no')}, (tfAns[i] === a ? '答對了。' : `答案是「${a ? '○ 對' : '✕ 錯'}」。`) + why));
-    box.append(row);
-  });
-}
-const tfScore = () => TF.reduce((n, [, a], i) => n + (tfAns[i] === a ? 1 : 0), 0);
-function renderCompare() {
-  const s = store.get('tfScores', {}), box = $('#tfCompare'); box.innerHTML = '';
-  if (s.pre != null) box.append(h('span', {}, `課前：${s.pre} / ${TF.length}`));
-  if (s.post != null) box.append(h('span', {}, `課後：${s.post} / ${TF.length}`));
-  if (s.pre != null && s.post != null) box.append(h('span', {class: 'mk'}, s.post > s.pre ? `進步 ${s.post - s.pre} 題！` : s.post === s.pre ? '一樣棒，觀念很穩' : '再複習一下影片吧'));
-}
-$('#tfCheck').addEventListener('click', () => renderTF(true));
-$('#tfSavePre').addEventListener('click', () => { const s = store.get('tfScores', {}); s.pre = tfScore(); store.set('tfScores', s); renderTF(true); renderCompare(); });
-$('#tfSavePost').addEventListener('click', () => { const s = store.get('tfScores', {}); s.post = tfScore(); store.set('tfScores', s); renderTF(true); renderCompare(); });
-$('#tfReset').addEventListener('click', () => { tfAns = {}; store.set('tfAns', tfAns); renderTF(); });
 
 /* ───────── 心願卡 ───────── */
 const WQ = [
@@ -977,12 +976,13 @@ $('#plan').append(h('thead', {}, h('tr', {}, h('th', {}, '時間'), h('th', {}, 
 $('#tnotes').append(h('h3', {style: 'font-size:1.3rem'}, '帶領提醒'), h('ul', {}, NOTES.map(n => h('li', {html: n}))));
 
 
+
 /* ───────── 啟動 ───────── */
-renderTF(); renderCompare(); renderCaseGrid(); renderStage(); renderWishForm(); renderLetter();
-openLesson(store.get('lesson', 1));
+renderWishForm(); renderLetter();
 setBig(store.get('big', false));
-const hash = location.hash.slice(1);
-showView(['learn', 'test', 'cases', 'wish', 'res', 'teach'].includes(hash) ? hash : store.get('view', 'learn'));
+const hash = location.hash.slice(1).toUpperCase();
+const first = /^L[1-5]$/.test(hash) ? hash : ['WISH', 'RES', 'TEACH'].includes(hash) ? hash.toLowerCase() : store.get('view', 'L1');
+go(['wish', 'res', 'teach'].includes(first) || /^L[1-5]$/.test(first) ? first : 'L1');
 </script>
 </body>
 </html>
