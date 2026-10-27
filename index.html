@@ -263,6 +263,28 @@ nav.tabs .xtab:first-of-type{margin-left:auto}
 .stop .opts button b{width:1.8rem;height:1.8rem}
 .stop .go{margin-bottom:.2rem}
 
+/* 重點整理卡（刻意固定淺色，投影或手機拍照都清楚） */
+.sumcard{--c-bg:#FFFEFA;--c-ink:#2F2A33;--c-mute:#6E6676;--c-plum:#8A4C86;--c-mark:#FFE07A;--c-line:#E6DCCB;
+  background:var(--c-bg);color:var(--c-ink);border:3px solid var(--c-line);border-radius:22px;padding:clamp(.9rem,2.4svh,1.4rem) 1.5rem 1rem;display:grid;gap:clamp(.6rem,1.6svh,1rem);color-scheme:light}
+.sumcard header{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.sumpill{background:var(--c-plum);color:#fff;border-radius:999px;padding:.15rem .9rem;font-weight:700;font-size:.95rem}
+.sumcard h3{font-size:clamp(1.5rem,3.6svh,1.9rem);color:var(--c-ink)}
+.sumcard h3 small{font-size:.6em;color:var(--c-plum);margin-left:.5rem}
+.sumcard ol{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:clamp(.4rem,1.2svh,.75rem)}
+.sumcard li{counter-increment:s;display:grid;grid-template-columns:2.2rem minmax(0,1fr);gap:.7rem;align-items:start;font-size:clamp(1rem,2.4svh,1.25rem);line-height:1.5;font-weight:500}
+.sumcard li::before{content:counter(s);width:2.2rem;height:2.2rem;border-radius:50%;background:var(--c-mark);border:2px solid var(--c-ink);display:grid;place-items:center;font-weight:900;font-size:1rem}
+.sumtake{background:var(--c-mark);border-radius:14px;padding:.6rem 1rem;font-family:var(--display);font-size:clamp(1.05rem,2.4svh,1.25rem);line-height:1.6;color:#2F2A33}
+.sumtake b{display:block;font-family:var(--body);font-size:.8rem;color:#5c4f2a}
+.sumcard footer{margin-top:0;display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--c-mute);border-top:2px dashed var(--c-line);padding-top:.6rem}
+.sumwrap{position:fixed;inset:0;z-index:50;background:rgba(18,22,28,.78);display:grid;align-items:start;justify-items:center;
+  padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));overflow:auto}
+.suminner{width:min(760px,100%);display:grid;gap:.6rem;margin-block:auto}
+.sumbtns{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.sumbtns p{color:#fff;margin-right:auto;font-size:.95rem}
+.sumbtns .btn{background:var(--sheet)}
+.sumbtns .btn.fill{background:var(--plum)}
+@media (max-width:600px){.sumcard{padding:1.1rem}.sumcard h3{font-size:1.5rem}.sumcard li{font-size:1.05rem}}
+
 @media (max-width:860px){
   .vidpane{grid-template-columns:minmax(0,1fr)}
   .stepper{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -356,7 +378,7 @@ h1 small{display:inline;font-size:.6em;margin-left:.6rem}
 <script>
 /* ───────── 課程資料 ───────── */
 const L = [
- {id:1, t:'預立醫療', full:'預立醫療：我的醫療我決定', len:'1:26',
+ {id:1, sum:["趁頭腦清楚，先做「預立醫療照護諮商」，約 60～90 分鐘", "自費約 2,000～3,500 元；65 歲以上重大傷病等有健保給付", "本人＋至少 1 位二親等內家屬到場；獨居可書面說明", "簽預立醫療決定書 → 公證或 2 位見證人 → 註記健保卡", "適用 5 種情況：末期、不可逆昏迷、永久植物人、極重度失智、公告重症", "簽了不等於放棄治療，隨時可以修改、撤回"], t:'預立醫療', full:'預立醫療：我的醫療我決定', len:'1:26',
   warm:{q:'如果有一天您不能說話，您希望誰替您做醫療決定？', o:['老伴','子女','交給醫師','還沒想過']},
   stops:[
    {at:23.5, q:'做「預立醫療照護諮商」時，要誰一起參加？', o:['自己去就好','本人＋至少一位二親等內的家屬','家屬去就好，本人不用'], a:1, why:'病主法規定，本人和至少一位二親等內親屬要一起參與；有指定醫療委任代理人的話，代理人也要來。'},
@@ -395,7 +417,7 @@ const L = [
   tip:'問到底的題目可以請大家舉手猜 A／B／C，再按選項揭曉。獨居、反悔這兩題最容易引起討論。',
   take:'這週找一個吃飯時間，問家人一句：「如果是我躺在病床上，你知道我想要什麼嗎？」',
   cases:['n1','n2','c1','w3']},
- {id:2, t:'放棄急救', full:'DNR：不急救，不是不照顧', len:'1:15',
+ {id:2, sum:["DNR＝生命末期時，不施行心肺復甦術", "意願書免費，2 位見證人（家人也可以），註記健保卡", "平常生病照樣治療；止痛、清潔、陪伴一樣不少", "法律上以本人意願為準；沒簽才由最近親屬決定", "「末期」要由 2 位醫師診斷", "居家安寧：先和團隊談好最後一刻要找誰"], t:'放棄急救', full:'DNR：不急救，不是不照顧', len:'1:15',
   warm:{q:'您覺得真實的急救，跟電視劇演的一樣嗎？', o:['差不多','應該更辛苦','沒看過，不確定']},
   stops:[
    {at:16.4, q:'真實的心肺復甦術（CPR）可能包括什麼？', o:['輕輕按幾下就醒了','用力壓胸、可能壓斷肋骨，還有電擊、插管接呼吸器','吃藥就好'], a:1, why:'CPR 要用力且快速壓胸，常伴隨電擊、氣管內管與呼吸器。對末期病人，常常只是延長死亡的過程。'},
@@ -434,7 +456,7 @@ const L = [
   tip:'「家人可以推翻嗎」和「要不要叫 119」最貼近真實情境，可以請有照顧經驗的學員分享。',
   take:'下次看病時，問問醫院或衛生所：我的健保卡有沒有安寧緩和意願註記？沒有的話，想想要不要簽。',
   cases:['w1','n1','w3']},
- {id:3, t:'器官捐贈', full:'器官捐贈：最後的禮物', len:'1:16',
+ {id:3, sum:["可捐心、肺、肝、腎、眼角膜等，年齡沒有固定上限", "器捐病主中心網站線上簽署，或醫院填紙本，註記健保卡", "一定要告訴家人，醫院仍會和家屬確認", "捐贈不用付費，捐贈後可以照常辦告別式", "可和 DNR、預立醫療決定同時簽", "想當大體老師：向醫學院登記，器官捐贈優先"], t:'器官捐贈', full:'器官捐贈：最後的禮物', len:'1:16',
   warm:{q:'您有想過器官捐贈嗎？', o:['想過，也簽了','想過，還沒簽','沒想過','覺得年紀大不能捐']},
   stops:[
    {at:29.3, q:'年紀大了，還能器官捐贈嗎？', o:['一定不行','不一定，由醫療團隊當下評估'], a:1, why:'能不能捐，要看當時的身體狀況，由醫療團隊評估，不必先替自己打叉。'},
@@ -470,7 +492,7 @@ const L = [
   tip:'這題容易觸及宗教與「全屍」觀念，請強調「捐或不捐都是愛」，不鼓勵也不勸退。',
   take:'把「我想捐／我不想捐／我還在想」選一個，親口告訴一位家人。',
   cases:['n4','s4']},
- {id:4, t:'斷食善終', full:'斷食善終：要分清楚的三件事', len:'1:22',
+ {id:4, sum:["末期自然吃不下：不勉強餵，做好口腔護理", "符合條件：可依病主法拒絕或撤除鼻胃管", "還能治療卻主動斷食：不是常規醫療，有法律風險", "不能表達的人，不能由別人替他決定斷食", "有這樣的想法，和家人、醫師、安寧團隊一起談", "長照專線 1966｜安心專線 1925（24 小時）"], t:'斷食善終', full:'斷食善終：要分清楚的三件事', len:'1:22',
   warm:{q:'您聽過「斷食善終」嗎？', o:['聽過，也了解','聽過，但不太懂','沒聽過']},
   stops:[
    {at:14.5, q:'「斷食善終」一般指的是？', o:['生命末期不再進食，只給少量水和口腔護理','減肥的方法','宗教的齋戒'], a:0, why:'倡議者描述的是生命末期停止進食，只用少量水分與口腔護理保持舒適。'},
@@ -503,7 +525,7 @@ const L = [
   tip:'這一課最需要情緒安全。不要評價任何人的選擇；若有學員分享照顧壓力或輕生念頭，課後個別關心，並提供安心專線 1925。',
   take:'想一想：到了生命末期，「吃」對您代表什麼？把答案說給家人聽。',
   cases:['n3','c1','c2','w2']},
- {id:5, t:'告別式', full:'告別式：好好說再見', len:'1:21',
+ {id:5, sum:["傳統、簡約家祭、追思音樂會、生前告別式，都可以", "新北市樹葬、花葬、海葬：推廣期間免使用費", "費用從數萬到數十萬，一定要書面估價單", "生前契約：預收款 75% 須交付信託", "30 天內辦死亡登記；國保喪葬給付 5 年內申請", "道謝・道歉・道愛・道別"], t:'告別式', full:'告別式：好好說再見', len:'1:21',
   warm:{q:'您希望自己的告別式是什麼樣子？', o:['傳統隆重','簡單溫馨','音樂會或生命回顧','還沒想過']},
   stops:[
    {at:29.1, q:'下面哪一個「不是」環保自然葬？', o:['樹葬','海葬','花葬','土葬造墓'], a:3, why:'樹葬、花葬、海葬都屬環保自然葬；土葬需要墓地。'},
@@ -811,6 +833,7 @@ const BUILD = {
     v.addEventListener('timeupdate', () => { if (!pauseOn.checked || !stop.hidden) return; cur.stops.forEach((s, i) => { if (!done.has(i) && v.currentTime >= s.at && v.currentTime < s.at + 1.2) show(i); }); });
     v.addEventListener('seeked', () => { cur.stops.forEach((s, i) => { if (v.currentTime < s.at - .3) done.delete(i); }); drawMarks(); });
     v.addEventListener('play', () => { stop.hidden = true; const r = box.getBoundingClientRect(), top = $('#tabs').offsetHeight; if (r.top < top || r.bottom > innerHeight) scrollBy(0, r.top - top - 8); });
+    v.addEventListener('ended', () => openSummary(cur));
     vidEl = v; drawMarks();
     const box = h('div', {class: 'vbox'}, v, stop);
     return h('div', {class: 'pane vidpane'},
@@ -820,7 +843,9 @@ const BUILD = {
         h('p', {class: 'bigq'}, '按播放，影片會在 3 個地方停下來問大家一題。'),
         h('p', {class: 'sub'}, '先請大家舉手選 A、B、C，再按答案揭曉，最後按「繼續看影片」。'),
         h('div', {class: 'pctl'}, h('label', {for: 'pauseOn'}, pauseOn, ' 影片中途停下來提問'), marks),
-        h('p', {class: 'sub'}, '看完影片，按下一步「問到底」，把細節一題一題問清楚。')));
+        h('p', {class: 'sub'}, '影片播完，會自動跳出「重點整理」，可以拍照帶回家。'),
+        h('button', {type: 'button', class: 'btn', on: {click: () => openSummary(cur)}}, '看重點整理（可拍照）'),
+        h('p', {class: 'sub'}, '接著按下一步「問到底」，把細節一題一題問清楚。')));
   },
   faq() {
     return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, `${cur.faq.length} 個大家最常問的問題・先猜再揭曉`), faqPlayer(cur));
@@ -848,13 +873,38 @@ const BUILD = {
   home() {
     const back = cur.warm.o[store.get('warm' + cur.id, -1)];
     return h('div', {class: 'pane'},
-      h('p', {class: 'eyebrow'}, '本課重點'),
-      h('ul', {class: 'keys'}, cur.keys.map(k => h('li', {}, h('span', {}, k)))),
+      h('p', {class: 'eyebrow'}, '本課重點・可以拍照帶回家'),
+      summaryCard(cur),
+      h('button', {type: 'button', class: 'btn', on: {click: () => openSummary(cur)}}, '放大成全螢幕，方便拍照'),
       back ? h('p', {class: 'sub'}, `開場時您選了「${back}」。上完這堂課，答案有沒有不一樣？`) : null,
-      h('p', {class: 'take'}, h('small', {}, '帶回家做一件事'), cur.take),
       cur.id === L.length ? h('p', {class: 'sub'}, '五堂課上完了！最後一步，把您的想法寫成一封給家人的心願信。') : null);
   }
 };
+
+
+/* 重點整理卡：固定淺色紙卡，拍照清楚 */
+const SITE = 'mattsue1003.github.io/hospice-care-lessons';
+function summaryCard(l) {
+  return h('article', {class: 'sumcard', 'aria-label': `第 ${l.id} 課重點整理`},
+    h('header', {}, h('span', {class: 'sumpill'}, `第 ${l.id} 課`), h('h3', {}, l.full.split('：')[0], h('small', {}, '重點整理'))),
+    h('ol', {}, l.sum.map(t => h('li', {}, t))),
+    h('p', {class: 'sumtake'}, h('b', {}, '帶回家做一件事'), l.take),
+    h('footer', {}, h('span', {}, '好好說再見・安寧緩和五堂課'), h('span', {}, SITE)));
+}
+function openSummary(l) {
+  if (vidEl && !vidEl.paused) vidEl.pause();
+  const close = () => { wrap.remove(); removeEventListener('keydown', esc); };
+  const esc = e => { if (e.key === 'Escape') close(); };
+  const wrap = h('div', {class: 'sumwrap', role: 'dialog', 'aria-modal': 'true', 'aria-label': `第 ${l.id} 課重點整理`, on: {click: e => { if (e.target === wrap) close(); }}},
+    h('div', {class: 'suminner'}, summaryCard(l),
+      h('div', {class: 'sumbtns'},
+        h('p', {}, '這張可以拍照帶回家'),
+        h('button', {type: 'button', class: 'btn', on: {click: () => { close(); if (vidEl) { vidEl.currentTime = 0; vidEl.play(); } }}}, '重看影片'),
+        l.id === cur.id && stepI === 1 ? h('button', {type: 'button', class: 'btn fill', on: {click: () => { close(); stepI = 2; renderLesson(); }}}, '下一步：問到底 →') : null,
+        h('button', {type: 'button', class: 'btn', on: {click: close}}, '關閉'))));
+  document.body.append(wrap); addEventListener('keydown', esc);
+  wrap.querySelector('.sumbtns .btn:last-child').focus({preventScroll: true});
+}
 
 /* 問到底：一題一題來，先猜再揭曉 */
 function faqPlayer(lesson) {
