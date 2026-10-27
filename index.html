@@ -77,7 +77,7 @@ section.view{padding-top:1.6rem}
 .lesson{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:2rem;align-items:start}
 .player{position:sticky;top:4.6rem;display:grid;gap:.6rem}
 .vbox{position:relative;aspect-ratio:9/16;max-width:100%;background:#DCE8F3;border-radius:var(--r);overflow:hidden;box-shadow:0 0 0 2px var(--line)}
-.vbox video{width:100%;height:100%;display:block;object-fit:cover;background:#DCE8F3}
+.vbox video{width:100%;height:100%;display:block;object-fit:contain;background:#DCE8F3}
 .stop{position:absolute;inset:0;background:color-mix(in srgb,var(--sheet) 94%,transparent);display:flex;flex-direction:column;justify-content:center;gap:.8rem;padding:1.2rem;overflow:auto}
 .stop .tag{font-family:var(--display);color:var(--plum);font-size:1.1rem}
 .stop h3{font-family:var(--body);font-size:1.15rem;font-weight:700}
@@ -242,7 +242,9 @@ nav.tabs .xtab:first-of-type{margin-left:auto}
 .bigq{font-family:var(--display);font-size:1.6rem;line-height:1.5;text-wrap:balance}
 .bigq b{color:var(--plum);margin-right:.5rem;font-family:var(--body);font-size:.8em}
 .warm .poll button{font-size:1.1rem;padding:.6rem 1.3rem}
-.vidpane{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:2rem;align-items:start}
+.vidpane{grid-template-columns:auto minmax(0,1fr);gap:2rem;align-items:start}
+/* 直式影片：高度跟著螢幕走，整支影片一定看得完整 */
+.vidpane .vbox{width:min(100%,360px,calc((100svh - 130px) * 9 / 16));height:auto;justify-self:center}
 .vside{display:grid;gap:.9rem}
 .talk{display:grid;gap:1.2rem}
 .cchips{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:.6rem}
@@ -250,9 +252,19 @@ nav.tabs .xtab:first-of-type{margin-left:auto}
 .stepnav{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
 .stepnav .btn{font-size:1.05rem;padding:.65rem 1.4rem}
 .keys li{font-size:1.1rem}
+/* 影片停格題：內容多時從上方開始、可捲動，不會被切掉 */
+.stop{justify-content:flex-start;padding:1rem;gap:.6rem;font-size:.92rem;overscroll-behavior:contain}
+.stop > :first-child{margin-top:auto}
+.stop > :last-child{margin-bottom:auto}
+.stop h3{font-size:1.08rem;line-height:1.5}
+.stop .why{font-size:.9rem}
+.opts button{display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:.55rem;align-items:center}
+.stop .opts button{padding:.5rem .7rem;line-height:1.45}
+.stop .opts button b{width:1.8rem;height:1.8rem}
+.stop .go{margin-bottom:.2rem}
+
 @media (max-width:860px){
   .vidpane{grid-template-columns:minmax(0,1fr)}
-  .vidpane .vbox{max-width:340px;width:100%;justify-self:center}
   .stepper{grid-template-columns:repeat(3,minmax(0,1fr))}
   nav.tabs .xtab:first-of-type{margin-left:0}
 }
@@ -781,7 +793,7 @@ const BUILD = {
       h('p', {class: 'sub'}, '請大家舉手選一個。這堂課最後，再回頭想想答案有沒有改變。'));
   },
   video() {
-    const v = h('video', {playsinline: '', controls: '', preload: 'metadata', src: `video/ch${cur.id}.mp4`, poster: `img/ch${cur.id}.jpg`});
+    const v = h('video', {playsinline: '', 'webkit-playsinline': '', controls: '', preload: 'metadata', src: `video/ch${cur.id}.mp4`, poster: `img/ch${cur.id}.jpg`});
     const stop = h('div', {class: 'stop', hidden: ''});
     const marks = h('span', {class: 'marks', 'aria-label': '停格題進度'});
     const pauseOn = h('input', {type: 'checkbox', id: 'pauseOn'}); pauseOn.checked = store.get('pauseOn', true);
@@ -798,10 +810,11 @@ const BUILD = {
     };
     v.addEventListener('timeupdate', () => { if (!pauseOn.checked || !stop.hidden) return; cur.stops.forEach((s, i) => { if (!done.has(i) && v.currentTime >= s.at && v.currentTime < s.at + 1.2) show(i); }); });
     v.addEventListener('seeked', () => { cur.stops.forEach((s, i) => { if (v.currentTime < s.at - .3) done.delete(i); }); drawMarks(); });
-    v.addEventListener('play', () => { stop.hidden = true; });
+    v.addEventListener('play', () => { stop.hidden = true; const r = box.getBoundingClientRect(), top = $('#tabs').offsetHeight; if (r.top < top || r.bottom > innerHeight) scrollBy(0, r.top - top - 8); });
     vidEl = v; drawMarks();
+    const box = h('div', {class: 'vbox'}, v, stop);
     return h('div', {class: 'pane vidpane'},
-      h('div', {class: 'vbox'}, v, stop),
+      box,
       h('div', {class: 'vside'},
         h('p', {class: 'eyebrow'}, `小麻雀短片・${cur.len}`),
         h('p', {class: 'bigq'}, '按播放，影片會在 3 個地方停下來問大家一題。'),
