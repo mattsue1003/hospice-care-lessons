@@ -1195,6 +1195,13 @@ async function updateCard() {
   cardCanvas = await drawWishCard();
   img.src = cardCanvas.toDataURL('image/png');
 }
+/* 下載：在 Claude 檢視器用 downloads 能力；一般網站（GitHub Pages）用瀏覽器下載 */
+let dlNS;
+async function saveFile(blob, name) {
+  if (dlNS === undefined) dlNS = window.claude?.use ? await window.claude.use('downloads').catch(() => null) : null;
+  if (dlNS) { try { await dlNS.save({filename: name, data: blob}); return 'saved'; } catch (e) { return e && e.code === 'declined' ? 'declined' : 'failed'; } }
+  saveBlob(blob, name); return 'saved';
+}
 function saveBlob(blob, name) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
   document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
@@ -1209,12 +1216,12 @@ function renderLetter() {
   box.innerHTML = '';
   const img = h('img', {id: 'cardImg', alt: '給家人的心願卡預覽', class: 'cardimg'});
   const btns = h('div', {class: 'cardbtns'},
-    h('button', {class: 'btn fill', type: 'button', on: {click: async () => { const c = cardCanvas || await drawWishCard(); c.toBlob(b => saveBlob(b, fname + '.png'), 'image/png'); note.textContent = '已下載圖片。如果沒反應，手機請長按卡片「儲存影像」，電腦按右鍵「另存圖片」。'; }}}, '下載圖片'),
+    h('button', {class: 'btn fill', type: 'button', on: {click: async () => { const c = cardCanvas || await drawWishCard(); const blob = await new Promise(r => c.toBlob(r, 'image/png')); const st = await saveFile(blob, fname + '.png'); note.textContent = st === 'declined' ? '已取消下載。' : '已下載圖片。如果沒看到檔案，手機請長按卡片「儲存影像」，電腦按右鍵「另存圖片」。'; }}}, '下載圖片'),
     h('button', {class: 'btn fill', type: 'button', on: {click: async () => {
       note.textContent = '正在製作 PDF…';
       try { const {jsPDF} = await loadJsPDF(); const c = cardCanvas || await drawWishCard();
         const pdf = new jsPDF({unit: 'mm', format: 'a4'}); const maxW = 170, maxH = 267; let w = maxW, hh = c.height / c.width * w; if (hh > maxH) { hh = maxH; w = c.width / c.height * hh; }
-        pdf.addImage(c.toDataURL('image/jpeg', .93), 'JPEG', (210 - w) / 2, (297 - hh) / 2, w, hh); pdf.save(fname + '.pdf'); note.textContent = '已下載 PDF（A4），可以直接列印。';
+        pdf.addImage(c.toDataURL('image/jpeg', .93), 'JPEG', (210 - w) / 2, (297 - hh) / 2, w, hh); const st = await saveFile(pdf.output('blob'), fname + '.pdf'); note.textContent = st === 'declined' ? '已取消下載。' : '已下載 PDF（A4），可以直接列印。';
       } catch (e) { note.textContent = 'PDF 製作失敗，請改用「下載圖片」。'; }
     }}}, '下載 PDF（A4）'));
   const share = h('button', {class: 'btn', type: 'button', hidden: '', on: {click: async () => {
