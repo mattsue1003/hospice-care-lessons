@@ -285,6 +285,34 @@ nav.tabs .xtab:first-of-type{margin-left:auto}
 .sumbtns .btn.fill{background:var(--plum)}
 @media (max-width:600px){.sumcard{padding:1.1rem}.sumcard h3{font-size:1.5rem}.sumcard li{font-size:1.05rem}}
 
+/* 爭議點、卡關原因、流程 */
+.tblock{display:grid;gap:.8rem;padding-bottom:1.2rem;border-bottom:2px dashed var(--line);margin-bottom:.4rem}
+.tcards{display:grid;gap:1rem}
+.tcard{border:2px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem;display:grid;gap:.7rem}
+.tcard h4{font-family:var(--display);font-size:1.35rem;margin:0;display:flex;gap:.6rem;align-items:center}
+.tcard h4 b{flex:none;width:1.9rem;height:1.9rem;border-radius:50%;background:var(--marker);color:var(--marker-ink);display:grid;place-items:center;font-family:var(--body);font-size:.9rem}
+.sides{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.7rem}
+.side{border-radius:14px;padding:.7rem .9rem;font-size:1rem;line-height:1.65}
+.side small{display:block;font-weight:700;font-size:.8rem;margin-bottom:.2rem}
+.side.yes{background:var(--teal-soft)} .side.yes small{color:var(--teal)}
+.side.no{background:var(--no-soft)} .side.no small{color:var(--no)}
+.flow{list-style:none;margin:0;padding:0;display:grid;gap:.5rem;counter-reset:f}
+.flow details{border:2px solid var(--line);border-radius:14px;padding:.6rem .9rem}
+.flow details[open]{border-color:var(--plum)}
+.flow summary{display:flex;gap:.6rem;align-items:center;font-family:var(--display);font-size:1.2rem;color:var(--ink);list-style:none}
+.flow summary::-webkit-details-marker{display:none}
+.flow summary b{flex:none;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--plum);color:var(--sheet);display:grid;place-items:center;font-family:var(--body);font-size:.85rem}
+.flow details p{margin:.5rem 0 .2rem 2.4rem;line-height:1.7}
+.flowtools{display:flex;justify-content:flex-end}
+@media (max-width:600px){.sides{grid-template-columns:minmax(0,1fr)}}
+
+/* 心願卡 */
+.wf .hint{margin:.1rem 0 .5rem;font-size:.9rem;color:var(--muted);background:var(--paper);border-radius:10px;padding:.5rem .7rem;line-height:1.65}
+.letter{font-family:var(--body);font-size:1rem}
+.cardimg{width:100%;height:auto;border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.18);background:#F8EEDD;aspect-ratio:auto 1080 / 1350}
+.cardbtns{display:flex;flex-wrap:wrap;gap:.5rem}
+.care{font-size:.88rem;background:var(--no-soft);border-radius:10px;padding:.5rem .8rem}
+
 @media (max-width:860px){
   .vidpane{grid-template-columns:minmax(0,1fr)}
   .stepper{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -351,7 +379,7 @@ h1 small{display:inline;font-size:.6em;margin-left:.6rem}
 </section>
 
 <section class="view" id="v-wish" hidden>
-  <div class="h2row"><h2>我的心願卡</h2><p>五堂課上完，勾一勾、寫一寫，右邊會變成一封給家人的信。資料只存在這台裝置上。</p></div>
+  <div class="h2row"><h2>我的心願卡</h2><p>五堂課上完，勾一勾、寫一寫，右邊會變成一張可以下載的心願卡（圖片或 A4 PDF）。資料只存在這台裝置上。</p></div>
   <div class="wish">
     <form class="wf" id="wishForm"></form>
     <div class="letter" id="letter" aria-live="polite"></div>
@@ -456,7 +484,7 @@ const L = [
   tip:'「家人可以推翻嗎」和「要不要叫 119」最貼近真實情境，可以請有照顧經驗的學員分享。',
   take:'下次看病時，問問醫院或衛生所：我的健保卡有沒有安寧緩和意願註記？沒有的話，想想要不要簽。',
   cases:['w1','n1','w3']},
- {id:3, sum:["可捐心、肺、肝、腎、眼角膜等，年齡沒有固定上限", "器捐病主中心網站線上簽署，或醫院填紙本，註記健保卡", "一定要告訴家人，醫院仍會和家屬確認", "捐贈不用付費，捐贈後可以照常辦告別式", "可和 DNR、預立醫療決定同時簽", "想當大體老師：向醫學院登記，器官捐贈優先"], t:'器官捐贈', full:'器官捐贈：最後的禮物', len:'1:16',
+ {id:3, talkCards:{"kind": "barrier", "title": "為什麼大家不太去捐？五個卡關的原因", "intro": "全台等待器官移植的人超過 1.1 萬（2026 年 5 月 11,687 人，七成以上等腎臟），每年完成大愛捐贈的只有三、四百位。您也有下面這些顧慮嗎？", "items": [{"t": "「要留全屍」", "say": "老一輩擔心身體不完整，不好走、不好見祖先。", "fact": "摘取手術後醫師會仔細縫合、維持外觀，遺體由家屬領回，可以照常辦告別式。"}, {"t": "家人當下不忍心", "say": "親人剛走，家人捨不得，也不知道本人到底想不想捐。", "fact": "器捐中心指出，最後家屬真正同意的比例不到兩成。本人事先說清楚，家人才不必在最痛的時候猜。"}, {"t": "怕「急著摘器官」", "say": "擔心醫院還沒盡力救，就先想著拿器官。", "fact": "腦死要經過嚴格的兩次判定，由與移植無關的醫師負責；救治團隊與移植團隊是分開的。"}, {"t": "醫院不好意思開口", "say": "醫護怕在家屬悲痛時提起，被誤會或引起衝突。", "fact": "所以很多潛在捐贈者從沒被問過。醫界與器捐中心正呼籲醫護主動、溫和地詢問。"}, {"t": "負面新聞", "say": "看到器官買賣、器捐爭議的新聞，就不敢捐了。", "fact": "衛福部說，大愛捐贈從 2023 年 416 人降到 366 人、318 人；台灣器官一律無償，嚴禁買賣。"}]}, sum:["可捐心、肺、肝、腎、眼角膜等，年齡沒有固定上限", "器捐病主中心網站線上簽署，或醫院填紙本，註記健保卡", "一定要告訴家人，醫院仍會和家屬確認", "捐贈不用付費，捐贈後可以照常辦告別式", "可和 DNR、預立醫療決定同時簽", "想當大體老師：向醫學院登記，器官捐贈優先"], t:'器官捐贈', full:'器官捐贈：最後的禮物', len:'1:16',
   warm:{q:'您有想過器官捐贈嗎？', o:['想過，也簽了','想過，還沒簽','沒想過','覺得年紀大不能捐']},
   stops:[
    {at:29.3, q:'年紀大了，還能器官捐贈嗎？', o:['一定不行','不一定，由醫療團隊當下評估'], a:1, why:'能不能捐，要看當時的身體狀況，由醫療團隊評估，不必先替自己打叉。'},
@@ -488,11 +516,11 @@ const L = [
    {q:'在哪裡簽？', o:['區公所','器捐病主中心網站線上簽，或到醫院填紙本'], a:1,
     ans:'到「器官捐贈移植登錄及病人自主推廣中心」網站線上簽署，或到醫院填寫紙本，再註記健保卡。',
     more:['想撤回時，也可以線上或書面撤回。']}],
-  disc:['捐或不捐，您心裡的理由是什麼？','如果家人想捐，您會支持嗎？'],
+  disc:['捐或不捐，您心裡的理由是什麼？','如果家人等腎等了好幾年，有人介紹「花錢出國就能換」，您會怎麼勸他？'],
   tip:'這題容易觸及宗教與「全屍」觀念，請強調「捐或不捐都是愛」，不鼓勵也不勸退。',
   take:'把「我想捐／我不想捐／我還在想」選一個，親口告訴一位家人。',
   cases:['n4','s4']},
- {id:4, sum:["末期自然吃不下：不勉強餵，做好口腔護理", "符合條件：可依病主法拒絕或撤除鼻胃管", "還能治療卻主動斷食：不是常規醫療，有法律風險", "不能表達的人，不能由別人替他決定斷食", "有這樣的想法，和家人、醫師、安寧團隊一起談", "長照專線 1966｜安心專線 1925（24 小時）"], t:'斷食善終', full:'斷食善終：要分清楚的三件事', len:'1:22',
+ {id:4, talkCards:{"kind": "debate", "title": "斷食善終的五個爭議點", "intro": "每一點都有兩邊的聲音。請大家舉手：比較認同哪一邊？沒有標準答案。", "items": [{"t": "誰有權決定？", "yes": "意識清楚的本人，有權拒絕食物，這是自己的身體自主。", "no": "不能表達的人（重度身障、失智）若由家屬決定，可能變成「替別人選擇死亡」；身障團體批評這是加工死亡。"}, {"t": "是自然死，還是加速死亡？", "yes": "末期本來就吃不下，順其自然、不硬灌，就是自然善終。", "no": "安寧緩和醫學學會認為，主動不吃是以加速死亡為目標，不符合善終定義；病主法起草人孫效智也說，末期逐漸不吃是自然過程，不叫斷食。"}, {"t": "過程苦不苦？", "yes": "倡議者說，做好口腔護理與症狀控制，可以走得平靜。", "no": "安寧醫護與評論提醒，斷食過程不一定輕鬆，可能飢餓、口乾、不適，有被過度美化的疑慮。"}, {"t": "法律的灰色地帶", "yes": "法律沒有禁止意識清楚的人自己不吃東西。", "no": "法界指出，替不能表達的人做決定，檢方可偵辦幫助殺人或煽惑；未經醫師診斷末期就擅自停止灌食，也有觸法疑慮。"}, {"t": "是制度的缺口嗎？", "yes": "長期臥床、失智的人常不符合安寧條例的「末期」，病主法又要事先簽好，家屬走投無路才想到斷食。", "no": "解方應該是補強制度、普及安寧和長照，而不是讓家屬自己來；病主法推手楊玉欣主張先強化緩和醫療。"}]}, sum:["末期自然吃不下：不勉強餵，做好口腔護理", "符合條件：可依病主法拒絕或撤除鼻胃管", "還能治療卻主動斷食：不是常規醫療，有法律風險", "不能表達的人，不能由別人替他決定斷食", "有這樣的想法，和家人、醫師、安寧團隊一起談", "長照專線 1966｜安心專線 1925（24 小時）"], t:'斷食善終', full:'斷食善終：要分清楚的三件事', len:'1:22',
   warm:{q:'您聽過「斷食善終」嗎？', o:['聽過，也了解','聽過，但不太懂','沒聽過']},
   stops:[
    {at:14.5, q:'「斷食善終」一般指的是？', o:['生命末期不再進食，只給少量水和口腔護理','減肥的方法','宗教的齋戒'], a:0, why:'倡議者描述的是生命末期停止進食，只用少量水分與口腔護理保持舒適。'},
@@ -525,7 +553,7 @@ const L = [
   tip:'這一課最需要情緒安全。不要評價任何人的選擇；若有學員分享照顧壓力或輕生念頭，課後個別關心，並提供安心專線 1925。',
   take:'想一想：到了生命末期，「吃」對您代表什麼？把答案說給家人聽。',
   cases:['n3','c1','c2','w2']},
- {id:5, sum:["傳統、簡約家祭、追思音樂會、生前告別式，都可以", "新北市樹葬、花葬、海葬：推廣期間免使用費", "費用從數萬到數十萬，一定要書面估價單", "生前契約：預收款 75% 須交付信託", "30 天內辦死亡登記；國保喪葬給付 5 年內申請", "道謝・道歉・道愛・道別"], t:'告別式', full:'告別式：好好說再見', len:'1:21',
+ {id:5, flow:{"title": "環保葬怎麼辦？從生前到追思，七個步驟", "steps": [{"t": "生前先說好", "d": "告訴家人想要樹葬、花葬或海葬，也可以寫進心願卡。家人事先知道，比較不會覺得「沒地方看你」。"}, {"t": "取得死亡證明書", "d": "在醫院由醫師開立；在家過世可請居家醫師或衛生所醫師開立，非病死要經檢察官相驗。"}, {"t": "申請火化", "d": "帶死亡證明書，向殯儀館或火化場申請火化許可，排定日期火化。新北市選擇環保葬的人，可參加市府聯合奠祭，奠祭服務不收費。"}, {"t": "骨灰研磨", "d": "依《殯葬管理條例》，骨灰要先經「骨灰再處理設備」研磨成細粉，才能植存或拋灑，通常在火化場處理。"}, {"t": "報名環保葬", "d": "向新北市殯葬管理處或市立殯儀館報名，選擇地點與日期。準備死亡證明書、火化許可、申請人身分證明，非親屬代辦要委託書；文件以公告為準。推廣期間免使用費。"}, {"t": "安葬儀式", "d": "樹葬、花葬：在園區指定位置，把骨灰放入可分解的容器或直接覆土，獻花告別。海葬：參加台北市、新北市、桃園市每年聯合舉辦的海葬，搭船到合法海域拋灑。"}, {"t": "之後怎麼追思", "d": "現場不立墓碑、不放名牌，也不撿骨。依園區規定通常不能焚香燒紙，家人可以到園區獻花，或在家用照片、音樂追思。"}], "note": "在公告地點以外自己灑骨灰是違法的。各園區的地點、日期與文件，以新北市殯葬管理處最新公告為準。"}, sum:["傳統、簡約家祭、追思音樂會、生前告別式，都可以", "新北市樹葬、花葬、海葬：推廣期間免使用費", "費用從數萬到數十萬，一定要書面估價單", "生前契約：預收款 75% 須交付信託", "30 天內辦死亡登記；國保喪葬給付 5 年內申請", "道謝・道歉・道愛・道別"], t:'告別式', full:'告別式：好好說再見', len:'1:21',
   warm:{q:'您希望自己的告別式是什麼樣子？', o:['傳統隆重','簡單溫馨','音樂會或生命回顧','還沒想過']},
   stops:[
    {at:29.1, q:'下面哪一個「不是」環保自然葬？', o:['樹葬','海葬','花葬','土葬造墓'], a:3, why:'樹葬、花葬、海葬都屬環保自然葬；土葬需要墓地。'},
@@ -554,6 +582,7 @@ const L = [
    {q:'家人過世後，第一件要辦的手續是？', o:['先辦告別式','取得死亡證明書，30 天內辦死亡登記'], a:1,
     ans:'先取得死亡證明書，30 天內到戶政事務所辦死亡登記。',
     more:['在醫院過世由醫師開立；在家過世可請居家醫師或衛生所醫師開立，非病死要經檢察官相驗。']},
+   {q: "沒有辦死亡登記，會怎樣？", o: ["沒關係，不影響", "會被罰錢，後面的手續也辦不下去"], a: 1, ans: "依《戶籍法》，無正當理由逾期未申請，可處 300～900 元罰鍰；經催告仍不辦，罰 900 元。", more: ["更麻煩的是後續手續卡住：沒有除戶，就很難辦繼承、遺產稅申報、銀行帳戶、保險理賠和喪葬給付。", "往生者的年金或津貼若繼續入帳，日後要退還；明知而冒領，還可能觸法。", "申請人：配偶、親屬、戶長、同居人或辦理喪事的人，到戶政事務所辦理。"]},
    {q:'喪葬補助可以領多少？', o:['沒有補助','國保約 10.5 萬元；勞保依投保薪資計算'], a:1,
     ans:'國保加保期間過世，2026 年發給 105,515 元（月投保金額 21,103 元 × 5 個月）。',
     more:['國保只保到 65 歲，65 歲以後過世就沒有國保喪葬給付。','有勞保的子女，父母或配偶過世，可請領勞保「家屬死亡給付」。','低收入、中低收入戶可向區公所或社會局申請殯葬補助。','國保喪葬給付要在 5 年內申請。']}],
@@ -591,6 +620,14 @@ const CASES = [
   todo:'照顧壓力大時，撥長照專線 1966，或請醫院安寧團隊協助。',
   care:'討論時請不評價個別家庭的選擇。',
   src:['聯合報 2026/1/31','https://udn.com/news/story/7266/9301155']},
+ {id:'n7', k:'news', when:'2015～2026 年', ch:3, title:'等不到腎，就出國買？',
+  scene:['全台有 8,600 多人在等腎臟，很多人洗腎一等就是好幾年。','這時有仲介說：花幾百萬元，出國就能換腎，不用等。'],
+  poll:{q:'如果您的家人等腎等了五年，聽到這個消息，您會？', o:['心動','不會','很掙扎']},
+  guess:{q:'2025 年，台灣人出國換腎，最多人去哪個國家？', o:['日本','中國大陸','柬埔寨'], a:2, why:'2025 年赴柬埔寨換腎的有 15 人，首度超過中國大陸的 13 人。'},
+  then:['《報導者》調查：跨境移植已變成「仲介主導」，病歷可能造假，例如掛名柬埔寨醫師、實際由中國醫師開刀，器官來源不明。','2015 年台灣修法：器官一律無償，買賣、仲介器官可處 1～5 年徒刑、併科罰金，在國外做也照罰；出國移植回國必須通報。','衛福部說，回國要長期吃抗排斥藥，健保資料比對就能發現沒有國內移植紀錄的人。','網路流傳的「詐騙園區器官價目表」，來源並未經過證實，轉傳要小心。'],
+  learn:['器官不夠，才讓黑市有機會。','買來的器官，可能是別人被迫賣掉的身體；自己也要面對感染、排斥和法律風險。','真正的解方，是讓更多人願意捐，並把心意告訴家人。'],
+  todo:'和家人聊一句：「如果是我，我願不願意捐？」',
+  src:['報導者','https://www.twreporter.org/a/illegal-cross-border-organ-transplantation']},
  {id:'n4', k:'news', when:'2026 年 9 月', ch:3, title:'71.5 萬人想捐，真正捐了幾位？',
   scene:['截至 2026 年 9 月，全台已有超過 71.5 萬人次在健保卡上預立器官捐贈意願。'],
   guess:{q:'那 2025 年一整年，真正完成器官捐贈的大約有幾位？', o:['3 萬位','3 千位','318 位'], a:2, why:'2025 年完成捐贈的是 318 位，2026 年到 9 月約 234 位。'},
@@ -848,7 +885,7 @@ const BUILD = {
         h('p', {class: 'sub'}, '接著按下一步「問到底」，把細節一題一題問清楚。')));
   },
   faq() {
-    return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, `${cur.faq.length} 個大家最常問的問題・先猜再揭曉`), faqPlayer(cur));
+    return h('div', {class: 'pane'}, cur.flow ? flowBlock(cur.flow) : null, h('p', {class: 'eyebrow'}, `${cur.faq.length} 個大家最常問的問題・先猜再揭曉`), faqPlayer(cur));
   },
   cases() {
     const list = CASES.filter(c => c.ch === cur.id);
@@ -866,7 +903,7 @@ const BUILD = {
     return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, `這一課有 ${list.length} 個真實案例，選一個開始`), chips, stage);
   },
   talk() {
-    return h('div', {class: 'pane'}, h('p', {class: 'eyebrow'}, '小組或兩兩討論・3～5 分鐘'),
+    return h('div', {class: 'pane'}, cur.talkCards ? talkCards(cur) : null, h('p', {class: 'eyebrow'}, '小組或兩兩討論・3～5 分鐘'),
       h('div', {class: 'talk'}, cur.disc.map((d, i) => h('p', {class: 'bigq'}, h('b', {}, `Q${i + 1}`), d))),
       h('details', {}, h('summary', {}, '講師提示'), h('div', {}, cur.tip)));
   },
@@ -904,6 +941,31 @@ function openSummary(l) {
         h('button', {type: 'button', class: 'btn', on: {click: close}}, '關閉'))));
   document.body.append(wrap); addEventListener('keydown', esc);
   wrap.querySelector('.sumbtns .btn:last-child').focus({preventScroll: true});
+}
+
+
+/* 爭議點（兩邊的聲音）／卡關原因（顧慮＋事實） */
+function talkCards(l) {
+  const T = l.talkCards, box = h('div', {class: 'tcards'});
+  T.items.forEach((it, i) => {
+    const key = `tc${l.id}_${i}`, saved = store.get(key, null), votes = h('div', {class: 'poll'});
+    const opts = T.kind === 'debate' ? ['比較認同支持者', '比較認同擔心的人', '兩邊都有道理'] : ['我也這樣想過', '沒想過'];
+    opts.forEach((o, j) => votes.append(h('button', {type: 'button', 'aria-pressed': saved === j, on: {click: () => { store.set(key, j); votes.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === j)); }}}, o)));
+    box.append(h('article', {class: 'tcard'}, h('h4', {}, h('b', {}, i + 1), it.t),
+      T.kind === 'debate'
+        ? h('div', {class: 'sides'}, h('div', {class: 'side yes'}, h('small', {}, '支持者這樣說'), h('p', {}, it.yes)), h('div', {class: 'side no'}, h('small', {}, '擔心的人這樣說'), h('p', {}, it.no)))
+        : h('div', {class: 'sides'}, h('div', {class: 'side no'}, h('small', {}, '常見的顧慮'), h('p', {}, it.say)), h('div', {class: 'side yes'}, h('small', {}, '其實是這樣'), h('p', {}, it.fact))),
+      votes));
+  });
+  return h('section', {class: 'tblock'}, h('p', {class: 'eyebrow'}, T.title), h('p', {class: 'sub'}, T.intro), box);
+}
+/* 流程：一步一步展開 */
+function flowBlock(F) {
+  const ol = h('ol', {class: 'flow'});
+  F.steps.forEach((st, i) => ol.append(h('li', {}, h('details', {open: i === 0 ? '' : false}, h('summary', {}, h('b', {}, i + 1), st.t), h('p', {}, st.d)))));
+  return h('section', {class: 'tblock'}, h('p', {class: 'eyebrow'}, F.title),
+    h('div', {class: 'flowtools'}, h('button', {type: 'button', class: 'chip', on: {click: e => { const all = [...ol.querySelectorAll('details')], open = !all.every(d => d.open); all.forEach(d => d.open = open); e.currentTarget.textContent = open ? '全部收起' : '全部展開'; }}}, '全部展開')),
+    ol, h('p', {class: 'care'}, F.note));
 }
 
 /* 問到底：一題一題來，先猜再揭曉 */
@@ -972,22 +1034,24 @@ function renderStage(st, c, list, open) {
 
 /* ───────── 心願卡 ───────── */
 const WQ = [
- {k: 'agent', type: 'text', lg: '我的醫療委任代理人', ph: '例如：大女兒 小美'},
- {k: 'cpr', type: 'radio', lg: '生命末期，心跳停止時', o: ['不要急救（DNR）', '要急救', '還在想，想再跟醫師談']},
+ {k: 'agent', type: 'text', lg: '我的醫療委任代理人', ph: '例如：大女兒 小美',
+  hint: '就是當您昏迷或無法表達時，代替您跟醫師說出醫療意願的人。可以是家人或信任的朋友（要成年、能清楚判斷）。這裡寫的是心意；要正式指定，需在醫院做預立醫療照護諮商時一起簽署。'},
+ {k: 'cpr', type: 'radio', lg: '生命末期，心跳停止時', o: ['不要急救（DNR）', '要急救', '還在想，想再跟醫師談'],
+  hint: 'DNR 就是不施行心肺復甦術：不壓胸、不電擊、不插管。'},
  {k: 'place', type: 'radio', lg: '最後一段時間，我希望在', o: ['家裡', '安寧病房', '都可以，讓家人方便就好']},
- {k: 'comfort', type: 'check', lg: '讓我覺得舒服的事', o: ['聽喜歡的音樂', '有人握著我的手', '家人輪流來說說話', '保持身體乾淨', '不要太多管子']},
+ {k: 'comfort', type: 'check', lg: '讓我覺得舒服的事（可複選）', o: ['聽喜歡的音樂', '有人握著我的手', '家人輪流來說說話', '保持身體乾淨', '不要太多管子']},
  {k: 'organ', type: 'radio', lg: '器官捐贈', o: ['我想捐', '我不想捐', '還在想']},
  {k: 'funeral', type: 'radio', lg: '我的告別式', o: ['傳統儀式', '簡單溫馨的家祭', '追思音樂會', '生前告別式']},
  {k: 'burial', type: 'radio', lg: '安葬方式', o: ['納骨塔', '樹葬或花葬', '海葬', '讓家人決定']},
- {k: 'words', type: 'area', lg: '我想對家人說（道謝・道歉・道愛・道別）', ph: '寫一句就好'}
+ {k: 'words', type: 'area', lg: '我想對家人說（道謝・道歉・道愛・道別）', ph: '寫一句就好，例如：謝謝你們陪我走這一路。'}
 ];
 let wish = store.get('wish', {});
 function renderWishForm() {
   const f = $('#wishForm'); f.innerHTML = '';
   WQ.forEach(q => {
-    const fs = h('fieldset', {}, h('legend', {}, q.lg));
-    if (q.type === 'text') fs.append(h('input', {type: 'text', id: 'w-' + q.k, value: wish[q.k] || '', placeholder: q.ph, on: {input: e => { wish[q.k] = e.target.value; saveWish(); }}}));
-    if (q.type === 'area') { const ta = h('textarea', {id: 'w-' + q.k, rows: 3, placeholder: q.ph, on: {input: e => { wish[q.k] = e.target.value; saveWish(); }}}); ta.value = wish[q.k] || ''; fs.append(ta); }
+    const fs = h('fieldset', {}, h('legend', {}, q.lg), q.hint ? h('p', {class: 'hint'}, q.hint) : null);
+    if (q.type === 'text') fs.append(h('input', {type: 'text', id: 'w-' + q.k, value: wish[q.k] || '', placeholder: q.ph, maxlength: 20, on: {input: e => { wish[q.k] = e.target.value; saveWish(); }}}));
+    if (q.type === 'area') { const ta = h('textarea', {id: 'w-' + q.k, rows: 3, maxlength: 120, placeholder: q.ph, on: {input: e => { wish[q.k] = e.target.value; saveWish(); }}}); ta.value = wish[q.k] || ''; fs.append(ta); }
     if (q.type === 'radio' || q.type === 'check') q.o.forEach((o, i) => {
       const id = `w-${q.k}-${i}`;
       const inp = h('input', {type: q.type === 'radio' ? 'radio' : 'checkbox', name: 'w-' + q.k, id, on: {change: e => {
@@ -998,12 +1062,11 @@ function renderWishForm() {
     });
     f.append(fs);
   });
-  f.append(h('fieldset', {}, h('legend', {}, '署名'), h('input', {type: 'text', id: 'w-name', value: wish.name || '', placeholder: '您的名字', on: {input: e => { wish.name = e.target.value; saveWish(); }}})));
+  f.append(h('fieldset', {}, h('legend', {}, '署名'), h('input', {type: 'text', id: 'w-name', value: wish.name || '', placeholder: '您的名字', maxlength: 12, on: {input: e => { wish.name = e.target.value; saveWish(); }}})));
   f.addEventListener('submit', e => e.preventDefault());
 }
 function letterText() {
-  const s = [];
-  s.push('親愛的家人：');
+  const s = ['親愛的家人：'];
   if (wish.agent) s.push(`如果有一天我不能說話，請讓「${wish.agent}」替我說出我的醫療意願。`);
   if (wish.cpr) s.push(`生命末期心跳停止時，我的選擇是：${wish.cpr}。`);
   if (wish.place) s.push(`最後一段時間，我希望在：${wish.place}。`);
@@ -1013,24 +1076,160 @@ function letterText() {
   if (wish.words) s.push(wish.words);
   return s;
 }
-function saveWish() { store.set('wish', wish); renderLetter(); }
-function renderLetter() {
-  const box = $('#letter'), lines = letterText(), note = h('span', {class: 'copied'});
-  box.innerHTML = '';
-  box.append(h('h3', {}, '給家人的心願信'));
-  if (lines.length === 1) box.append(h('p', {style: 'color:var(--muted)'}, '左邊勾選或填寫後，這裡會出現您的心願信。'));
-  else lines.forEach(t => box.append(h('p', {}, t)));
-  box.append(h('p', {class: 'sig'}, (wish.name || '　　　') + ' 敬上'));
-  box.append(h('div', {style: 'display:flex;gap:.6rem;align-items:center;flex-wrap:wrap'},
-    h('button', {class: 'btn', type: 'button', on: {click: async () => {
-      const txt = [...lines, (wish.name || '') + ' 敬上'].join('\n');
-      try { await navigator.clipboard.writeText(txt); note.textContent = '已複製，可以貼到 LINE 傳給家人。'; }
-      catch (e) { const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); note.textContent = '已選取文字，請按複製。'; }
-    }}}, '複製這封信'),
-    h('button', {class: 'btn', type: 'button', on: {click: () => { wish = {}; store.set('wish', wish); renderWishForm(); renderLetter(); }}}, '全部清除'), note));
-  box.append(h('p', {class: 'src'}, '心願信不是法律文件。要具法律效力，請簽署 DNR 意願書或預立醫療決定書。'));
-}
+let wishTimer = null;
+function saveWish() { store.set('wish', wish); clearTimeout(wishTimer); wishTimer = setTimeout(updateCard, 250); }
 
+/* 心願卡圖片：1080 寬，暖色紙卡＋小麻雀，用 Canvas 畫，可下載 PNG／PDF */
+const EGG = 'M0,-180 C52,-180 70,-110 70,-70 C70,-28 40,-8 0,-8 C-40,-8 -70,-28 -70,-70 C-70,-110 -52,-180 0,-180Z';
+function cvBird(g, x, y, sc, dir, cap, extra) {
+  g.save(); g.translate(x, y); g.scale(sc * dir, sc);
+  g.lineJoin = 'round'; g.lineCap = 'round'; g.strokeStyle = '#4A3D33';
+  const P = d => new Path2D(d);
+  g.fillStyle = cap; g.lineWidth = 4; g.fill(P('M-52,-40 L-104,-16 L-62,-22 Z')); g.stroke(P('M-52,-40 L-104,-16 L-62,-22 Z'));
+  g.lineWidth = 4; g.stroke(P('M-14,-12 L-16,8 M14,-12 L12,8'));
+  g.fillStyle = '#FFFDF7'; g.fill(P(EGG));
+  g.save(); g.clip(P(EGG)); g.fillStyle = cap; g.fill(P('M-90,-200 L90,-200 L90,-140 C62,-136 34,-124 4,-128 C-26,-131 -44,-100 -52,-44 L-90,-30Z')); g.restore();
+  g.lineWidth = 4.5; g.stroke(P(EGG));
+  g.fillStyle = cap; g.filter = 'brightness(.88)'; g.fill(P('M-14,-96 C-50,-104 -70,-62 -58,-34 C-40,-28 -18,-52 -14,-96Z')); g.filter = 'none'; g.lineWidth = 4; g.stroke(P('M-14,-96 C-50,-104 -70,-62 -58,-34 C-40,-28 -18,-52 -14,-96Z'));
+  g.fillStyle = 'rgba(247,166,166,.75)'; g.beginPath(); g.ellipse(36, -80, 11, 6.5, 0, 0, 7); g.fill();
+  g.strokeStyle = '#2b221c'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(6, -104); g.quadraticCurveTo(12, -96, 18, -104); g.moveTo(34, -102); g.quadraticCurveTo(40, -94, 46, -102); g.stroke();
+  g.strokeStyle = '#4A3D33'; g.fillStyle = '#EFA640'; g.lineWidth = 2.5; g.fill(P('M47,-96 L68,-89 L47,-83Z')); g.stroke(P('M47,-96 L68,-89 L47,-83Z'));
+  if (extra === 'flower') { g.save(); g.translate(-14, -176); for (let i = 0; i < 5; i++) { g.save(); g.rotate(i * 72 * Math.PI / 180); g.fillStyle = '#F59BB7'; g.beginPath(); g.ellipse(0, -11, 8, 11, 0, 0, 7); g.fill(); g.lineWidth = 2.5; g.stroke(); g.restore(); } g.fillStyle = '#FFD45E'; g.beginPath(); g.arc(0, 0, 6, 0, 7); g.fill(); g.restore(); }
+  if (extra === 'glasses') { g.lineWidth = 3; g.beginPath(); g.arc(12, -104, 13, 0, 7); g.moveTo(54, -102); g.arc(41, -102, 13, 0, 7); g.stroke(); }
+  g.restore();
+}
+function cvHeart(g, x, y, r, col) { g.save(); g.translate(x, y); g.scale(r / 10, r / 10); g.fillStyle = col; g.fill(new Path2D('M0,4 C-12,-6 -6,-14 0,-8 C6,-14 12,-6 0,4Z')); g.restore(); }
+function cvRound(g, x, y, w, hh, r) { g.beginPath(); g.roundRect(x, y, w, hh, r); }
+function wrapText(g, text, maxW) {
+  const out = []; let line = '';
+  const NOSTART = '，。、；：！？）」』…', ch0 = [...String(text)];
+  for (const ch of ch0) {
+    if (ch === '\n') { out.push(line); line = ''; continue; }
+    if (g.measureText(line + ch).width > maxW && line) {
+      if (NOSTART.includes(ch)) { const last = [...line].pop(); out.push([...line].slice(0, -1).join('')); line = last + ch; }   // 標點不放行首
+      else { out.push(line); line = ch; }
+    } else line += ch;
+  }
+  if (line) out.push(line); return out;
+}
+const FD = '"LXGW WenKai TC","Noto Sans TC","PingFang TC",serif', FB = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+function cardRows() {
+  const r = [];
+  if (wish.agent) r.push(['醫療代理人', `${wish.agent}（我不能說話時，請替我說出心意）`]);
+  if (wish.cpr) r.push(['心跳停止時', wish.cpr]);
+  if (wish.place) r.push(['最後的時光', `希望在${wish.place}`.replace('希望在都可以', '都可以')]);
+  if ((wish.comfort || []).length) r.push(['讓我舒服的事', wish.comfort.join('、')]);
+  if (wish.organ) r.push(['器官捐贈', wish.organ]);
+  if (wish.funeral) r.push(['我的告別式', wish.funeral]);
+  if (wish.burial) r.push(['安葬方式', wish.burial]);
+  return r;
+}
+async function drawWishCard() {
+  const rows = cardRows(), W = 1080, X0 = 110, VX = 400, VW = W - VX - 110;
+  const allText = '給家人的心願卡親愛的家人好好說再見安寧緩和五堂課敬上年月日' + rows.flat().join('') + (wish.words || '') + (wish.name || '') + '這張心願卡是寫給家人的心意不是法律文件正式意願請簽意願書或預立醫療決定書0123456789（）、，。';
+  try { await Promise.all([document.fonts.load(`700 40px "LXGW WenKai TC"`, allText), document.fonts.load(`500 36px "Noto Sans TC"`, allText), document.fonts.load(`700 28px "Noto Sans TC"`, allText)]); } catch (e) {}
+  const m = document.createElement('canvas').getContext('2d');
+  // 先算高度
+  let y = 600;
+  m.font = `500 36px ${FB}`;
+  const rowLines = rows.map(([, v]) => wrapText(m, v, VW));
+  rowLines.forEach(ls => { y += Math.max(64, ls.length * 52 + 12) + 22; });
+  m.font = `400 42px ${FD}`;
+  const wl = wish.words ? wrapText(m, wish.words, W - 2 * X0 - 136) : [];
+  if (!rows.length && !wl.length) y += 120;
+  if (wl.length) y += 40 + wl.length * 64 + 70;
+  y += 230;
+  const H = Math.max(1350, y + 40);
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  // 底色與暈染
+  g.fillStyle = '#F8EEDD'; g.fillRect(0, 0, W, H);
+  [[160, 140, 380, 'rgba(249,205,180,.55)'], [W - 120, H - 160, 420, 'rgba(198,230,208,.55)'], [W - 80, 520, 300, 'rgba(226,206,236,.45)'], [90, H - 420, 260, 'rgba(255,224,150,.4)']].forEach(([cx, cy, r, col]) => {
+    const gr = g.createRadialGradient(cx, cy, 0, cx, cy, r); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H); });
+  cvRound(g, 40, 40, W - 80, H - 80, 40); g.fillStyle = 'rgba(255,253,247,.92)'; g.fill(); g.lineWidth = 4; g.strokeStyle = '#E8D5B8'; g.stroke();
+  cvRound(g, 62, 62, W - 124, H - 124, 30); g.setLineDash([4, 12]); g.lineWidth = 3; g.strokeStyle = '#EEDCC2'; g.stroke(); g.setLineDash([]);
+  // 電線與小麻雀
+  g.strokeStyle = '#4A3D33'; g.lineWidth = 3; g.beginPath(); g.moveTo(90, 250); g.quadraticCurveTo(540, 300, W - 90, 250); g.stroke();
+  cvBird(g, 330, 270, .72, 1, '#B98450', 'flower');
+  cvBird(g, 540, 282, .6, -1, '#CFA06C');
+  cvBird(g, 750, 270, .72, -1, '#9C6B3F', 'glasses');
+  cvHeart(g, 438, 150, 13, '#F27A8F'); cvHeart(g, 470, 118, 9, '#F7A6B6'); cvHeart(g, 640, 132, 11, '#F27A8F');
+  // 標題
+  g.textAlign = 'center'; g.fillStyle = '#6B3F66'; g.font = `700 78px ${FD}`; g.fillText('給家人的心願卡', W / 2, 400);
+  g.fillStyle = '#B09C86'; g.font = `500 26px ${FB}`; g.fillText('好好說再見・安寧緩和五堂課', W / 2, 446);
+  g.textAlign = 'left'; g.fillStyle = '#3A2F2A'; g.font = `700 46px ${FD}`; g.fillText('親愛的家人：', X0, 540);
+  // 每一列
+  const PILL = ['#FDE2D3', '#DDEFE4', '#E6E0F4', '#FFF0C2', '#DCEBF7', '#F8DDE6', '#E4F0D8'];
+  y = 600;
+  rows.forEach(([lab, v], i) => {
+    const ls = rowLines[i], hh = Math.max(64, ls.length * 52 + 12);
+    cvRound(g, X0, y, 260, 58, 29); g.fillStyle = PILL[i % PILL.length]; g.fill();
+    g.fillStyle = '#4A3D33'; g.font = `700 28px ${FB}`; g.textAlign = 'center'; g.fillText(lab, X0 + 130, y + 39);
+    g.textAlign = 'left'; g.fillStyle = '#2F2A33'; g.font = `500 36px ${FB}`;
+    ls.forEach((t, j) => g.fillText(t, VX, y + 42 + j * 52));
+    y += hh + 22;
+  });
+  if (!rows.length && !wl.length) { g.fillStyle = '#B09C86'; g.font = `400 36px ${FD}`; g.fillText('在左邊勾一勾、寫一寫，這裡就會出現您的心願。', X0, y + 50); y += 120; }
+  // 想說的話
+  if (wl.length) {
+    y += 20; const bh = wl.length * 64 + 60;
+    cvRound(g, X0, y, W - 2 * X0, bh, 28); g.fillStyle = '#FFF2C4'; g.fill();
+    g.fillStyle = '#E3B94E'; g.font = `700 80px ${FD}`; g.fillText('「', X0 + 4, y + 82);
+    g.fillStyle = '#3A2F2A'; g.font = `400 42px ${FD}`;
+    wl.forEach((t, j) => g.fillText(t, X0 + 96, y + 70 + j * 64));
+    y += bh + 30;
+  }
+  // 署名與日期
+  const d = new Date();
+  g.textAlign = 'right'; g.fillStyle = '#3A2F2A'; g.font = `700 48px ${FD}`; g.fillText(`${wish.name || '＿＿＿＿'} 敬上`, W - X0, y + 70);
+  g.fillStyle = '#8C7F74'; g.font = `500 26px ${FB}`; g.fillText(`${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`, W - X0, y + 112);
+  // 頁尾
+  g.textAlign = 'center'; g.fillStyle = '#B3A493'; g.font = `500 22px ${FB}`;
+  g.fillText('這張心願卡是寫給家人的心意，不是法律文件。', W / 2, H - 112);
+  g.fillText('正式意願請簽 DNR 意願書或預立醫療決定書。', W / 2, H - 80);
+  return c;
+}
+let cardCanvas = null;
+async function updateCard() {
+  const img = $('#cardImg'); if (!img) return;
+  cardCanvas = await drawWishCard();
+  img.src = cardCanvas.toDataURL('image/png');
+}
+function saveBlob(blob, name) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+function loadJsPDF() {
+  if (window.jspdf) return Promise.resolve(window.jspdf);
+  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; sc.onload = () => res(window.jspdf); sc.onerror = rej; document.head.append(sc); });
+}
+function renderLetter() {
+  const box = $('#letter'), note = h('p', {class: 'copied', 'aria-live': 'polite'});
+  const fname = `${wish.name ? wish.name + '的' : '我的'}心願卡`;
+  box.innerHTML = '';
+  const img = h('img', {id: 'cardImg', alt: '給家人的心願卡預覽', class: 'cardimg'});
+  const btns = h('div', {class: 'cardbtns'},
+    h('button', {class: 'btn fill', type: 'button', on: {click: async () => { const c = cardCanvas || await drawWishCard(); c.toBlob(b => saveBlob(b, fname + '.png'), 'image/png'); note.textContent = '已下載圖片。如果沒反應，手機請長按卡片「儲存影像」，電腦按右鍵「另存圖片」。'; }}}, '下載圖片'),
+    h('button', {class: 'btn fill', type: 'button', on: {click: async () => {
+      note.textContent = '正在製作 PDF…';
+      try { const {jsPDF} = await loadJsPDF(); const c = cardCanvas || await drawWishCard();
+        const pdf = new jsPDF({unit: 'mm', format: 'a4'}); const maxW = 170, maxH = 267; let w = maxW, hh = c.height / c.width * w; if (hh > maxH) { hh = maxH; w = c.width / c.height * hh; }
+        pdf.addImage(c.toDataURL('image/jpeg', .93), 'JPEG', (210 - w) / 2, (297 - hh) / 2, w, hh); pdf.save(fname + '.pdf'); note.textContent = '已下載 PDF（A4），可以直接列印。';
+      } catch (e) { note.textContent = 'PDF 製作失敗，請改用「下載圖片」。'; }
+    }}}, '下載 PDF（A4）'));
+  const share = h('button', {class: 'btn', type: 'button', hidden: '', on: {click: async () => {
+    try { const c = cardCanvas || await drawWishCard(); const blob = await new Promise(r => c.toBlob(r, 'image/png')); await navigator.share({files: [new File([blob], fname + '.png', {type: 'image/png'})], title: fname}); } catch (e) {} }}}, '分享給家人（LINE 等）');
+  try { const probe = new File([new Blob(['x'])], 'x.png', {type: 'image/png'}); if (navigator.canShare && navigator.canShare({files: [probe]})) share.hidden = false; } catch (e) {}
+  btns.append(share,
+    h('button', {class: 'btn', type: 'button', on: {click: async () => {
+      const txt = [...letterText(), (wish.name || '') + ' 敬上'].join('\n');
+      try { await navigator.clipboard.writeText(txt); note.textContent = '已複製文字，可以貼到 LINE 傳給家人。'; } catch (e) { note.textContent = '這個瀏覽器不允許複製，請改用下載圖片。'; }
+    }}}, '複製文字'),
+    h('button', {class: 'btn', type: 'button', on: {click: () => { wish = {}; store.set('wish', wish); renderWishForm(); updateCard(); }}}, '全部清除'));
+  box.append(h('h3', {}, '您的心願卡'), h('p', {class: 'sub'}, '左邊填寫，卡片會即時更新。'), img, btns, note,
+    h('p', {class: 'src'}, '心願卡不是法律文件。要具法律效力，請簽署 DNR 意願書或預立醫療決定書。'));
+  updateCard();
+}
 /* ───────── 資源與講師 ───────── */
 RES.forEach(r => $('#resList').append(h('div', {class: 'card'}, h('h3', {style: 'font-size:1.15rem'}, r.t), r.big ? h('p', {class: 'big'}, r.big) : null, h('p', {}, r.d),
   r.url ? h('a', {href: r.url, target: '_blank', rel: 'noopener', style: 'word-break:break-all;font-size:.9rem'}, r.url) : null)));
